@@ -1,0 +1,55 @@
+Induction rule 
+
+	(0)		[ (p ↦ q)  ⇐  (p ∧ v = k  ↦  (p ∧ v < k) ∨ q) ]
+
+ensure rule
+
+	(1)		[ (p ↦ q)  ⇐  (p un q) ∧ (tr p ∧ ¬q) ]
+
+from un to co
+
+	(2)		[ (p un q)   ≡   (p ∧ ¬q  co  p ∨ q) ]
+
+We prove:
+
+	[ (p ∧ v = k  ↦  (p ∧ v < k) ∨ q)   ⇐   (p ∧ v ≤ k  un  q) ∧ (tr  p ∧ v = k ∧ ¬q) ]
+
+that is, provided
+
+	(3)		p ∧ v ≤ k  un  q
+	(4)		tr  p ∧ v = k ∧ ¬q
+
+we prove
+
+	p ∧ v = k  ↦  (p ∧ v < k) ∨ q
+
+We translate (2) in a form with co using (2)
+
+
+	Left-hand side of co:
+
+		p ∧ ¬q
+
+		   (p ∧ v = k ∧ (¬p ∨ k ≤ v) ∧ ¬q
+		=	{ Predicate calculus }
+		   p ∧ v = k ∧ k ≤ v ∧ ¬q
+		=	{ ≤ is reflexive }
+		   p ∧ v = k ∧ ¬q
+
+	Right-hand side of co:
+
+		p ∨ q
+
+		   (p ∧ v = k) ∨ (p ∧ v < k) ∨ q
+		=	{ Predicate calculus and ≤ }
+		   (p ∧ v ≤ k) ∨ q
+
+		   p ∧ v = k ∧ ¬q  co  (p ∧ v ≤ k) ∨ q
+		⇐	{ lhs weakening }
+		   p ∧ v ≤ k ∧ ¬q  co  (p ∧ v ≤ k) ∨ q
+		=	{ (2) }
+		   p ∧ v ≤ k  un  q
+
+transient comes from the same simplification as the lhs of the co property.
+
+		   tr  p ∧ v = k ∧ ¬q

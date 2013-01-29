@@ -1,0 +1,27 @@
+Procedure Call and Call Rejection
+=============================
+
+
+In sequential programming, one could see a procedure call as an abbreviation for the body of the procedure it calls or we could see it as a primitive instruction with its very own semantics - the specification of the procedure.
+
+In concurrent programming, in particular when designing a program using action systems, the notion of procedure call can also be useful.  However, it is tricky to define the notion of procedure call properly because, on one hand, we would like a call to fit in one atomic action (hence, no intermediate states in the invocation) and, on the other hand, we would like to be able to refine the specification of procedures down to arbitrary programs.
+
+A first idea to solve the problem would be to split a procedure call in two: the passage of arguments together with the activation of the body on one hand and the return and yielding of results on the other.  The problem is that, for a mechanism that is supposed to simplify a specification, the use is rather cumbersome.  Instead, we opt for the idea of call rejection.  The abstract specification of the procedure promises, upon a call to always deliver the result immediately.  In the refinement, when the required results are not available, the call is rejected and a computation is started so that the result will eventually be available and the call would not be rejected forever.  The possibility of call rejection is invisible to the caller.
+
+The procedure call contributes to the properties of the caller side of a specification only insofar as it is part of infinite call sequences.  This is because infinite repetition of an action is the only way to force an action of happening.  By replacing some calls by rejections (which are equivalent to skips on the caller side and equivalent to the creation of a routine activation on the callee side), an infinite sequence of attempt can refine an infinite sequence of successful call as long as no calls are rejected for infinitely long.
+
+The idea of call rejection is taken from Misra [Mis2001].  I decided to put it in the context of refinement to make the failure part of a call invisible and to make a complete request for a module service atomic, even if it's not executed atomically.
+
+Let's suppose we have module F and G and A is a statement of F which invokes a procedure of G.  In the formulation of F, we want to leave out all the mechanics of G for answering the call properly.  On the other hand, we may want, while refining G, to add a rejection clause to the procedure that A calls.  Let's say the acceptance condition for the call is c and the rejection clause is B.  Since B is a statement of G, which is assumed to be compatible with F, B does not create problems when we add it to the safety trace.  The main problem is therefore to prove that:
+
+	[ G F;A;true  ⇐  G F;(c;A ∨ ~c;B);true ]
+
+with (c;A ∨ ~c;B) being a call attempt.  This means that whenever A needs to be executed eventually, it will be attempted until it is accepted.  Therefore, a rejected call must establish a condition `d' that will lead to `c' being true.  We don't exclude the possibility that [ d ≡ c ].  So far, we assume:
+
+	(0)		G (~c;B  ⇒  X;d)
+	(1)		d ↦ c
+	(1')			G (•d  ⇒  F;•c)
+
+We must finally make sure that `c' is not invalidated before an attempt to make call A is made.  Therefore, every other statement than 
+
+

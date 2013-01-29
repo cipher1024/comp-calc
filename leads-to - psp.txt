@@ -1,0 +1,35 @@
+PSP
+
+(0)		r un b
+(1)		p ↦ q
+
+prove
+
+(2)		p ∧ r  ↦  (q ∧ r) ∨ b
+using
+
+(3)		[ (p ↦ q)   ≡   G (•p  ⇒  F;•q) ]
+(4)		[ (p un q)   ≡   G (•p  ⇒  (G •p) ; S ; •q) ]
+(5)		[ S ⇒ F ]
+
+(0')		G (•r  ⇒  (G •r) ; B ; •b)
+(1')		G (•p  ⇒  F ; •q)
+(2')		G (•(p∧r)  ⇒  F ; •( (q ∧ r) ∨ b ))
+
+		   •(p ∧ r) 
+		⇒	{ (0) and (1) }
+		   F ; •q  ∧  (G •r) ; S ; •b
+		=	{ (10.iv) to separate •r from •b }
+		   F ; •q ∧ ( (G •r ∧ E)  ∨  (G •r ∧ F) ; S ; •b )
+		⇒	{ Predicate calculus to group •q with •r }
+		   (F ; •q ∧ G •r)  ∨  F ; S ; •b
+		⇒	{ persitence and G is strengthening }
+		   F ; •(q ∧ r)  ∨  F ; S ; •b
+		⇒	{ (5) then [ F ≡ F;F ] }
+		   F ; •(q ∧ r)  ∨  F ; •b
+		=	{ ';' over ∨ }
+		   F ; •( (q ∧ r) ∨ b )
+
+prove (1) using (2) and (0)
+
+... can't be done

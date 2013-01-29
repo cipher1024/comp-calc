@@ -1,0 +1,21 @@
+
+p un q
+	G (•p  ⇒  (G •p) ; S ; •q)
+q un r
+	G (•q  ⇒  (G •q) ; S ; •r)
+	
+
+p ∨ q  un  r
+	G (•(p ∨ q)  ⇒  (G •(p ∨ q)) ; S ; •r)
+
+(C5)		[ G •p  ≡  (G •p) ; S ; (G •p) ]
+
+		   •p ∨ •q
+		⇒	{ (A) }
+		   (G •p) ; S ; •q  ∨  •q
+		⇒	{ (B) }
+		   (G •p) ; S ; (G •q) ; S ; •r  ∨  (G •q) ; S •r
+		⇒	{ Monotonicity }
+		   (G •(p ∨ q)) ; S ; (G •(p ∨ q)) ; S ; •r  ∨  (G •(p ∨ q)) ; S •r
+		=	{ (1) }
+		   (G •(p ∨ q)) ; S ; •r

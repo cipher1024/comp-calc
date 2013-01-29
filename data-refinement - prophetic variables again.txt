@@ -1,0 +1,33 @@
+Data refinement
+
+ℇ t ⇒ ℇ (s∧t)
+
+
+remove v
+t.τ   ⇒〈∃v,u:  #u = #τ:  (t ∧ s).(τ <+ v → u)〉
+
+〈∀s: [ s ⇒ t ]:  [ ℇ s  ⇒  ℇ (s∧r) ]〉
+
+av -- abstract variable
+rv -- refined variable
+
+AR	-- abstract action relation
+RR	-- refined action relation
+
+ap	-- abstraction invariant
+gp	-- glueing invariant
+
+abstract invariant preservation:
+
+	〈∀av,av': ap.av ∧ av(AR)av': ap.av'〉
+
+glueing invariant preservation:
+
+	〈∀av,av',rv,rv': ap.av ∧ av(gp)rv ∧ av(AR)av' ∧ (av,rv)(RR)(av',rv'): ap.av' ∧ av'(gp)rv'〉
+
+
+〈∀rv, rv', av': rv(RR)rv' ∧ av'(gp)rv':〈∃av: ap.av ∧ av(gp)rv: av(AR)av'〉〉
+
+There are two elements here:
+	* a concrete choice propagates backward in time in the abstract choices
+	* the abstract invariant has to be complete: every abstract value that satisfies it must be reachable.

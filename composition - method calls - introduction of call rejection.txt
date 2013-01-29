@@ -1,0 +1,163 @@
+Introduction of Call Rejection
+==========================
+
+	G F;c;A;true
+	G F;( c;A ∨ ~c;B );true
+
+	(0)	[ ~c;B ⇒ X;d ]
+	(1)	•d  ⇒  F;•c
+
+	(2)		[ B ⇒ C ]
+	(3)		[ c;C ⇒ X;c ]
+	(4)		G (A ∨ C);true
+
+
+		   F;~c;B;true
+		⇒	{ (0) and [ F;X ⇒ F ] }
+		   F;d;true
+		⇒	{ (1) then F;F = F }
+		   F;c;true 
+		=	{ G F;( c;A ∨ ~c;B );true }
+		   F;c;F;( c;A ∨ ~c;B );true
+		=	{ (4) }
+		   F;c;( F;(c;A ∨ ~c;B);true ∧ G (A ∨ C);true )
+		⇒	{ (7) }
+		   F;c;*C;*(A;*C);( c;A ∨ ~c;B );true
+		⇒	{ (6) }
+		   F;F;c;*(A;*C);( c;A ∨ ~c;B );true
+		⇒	{ unfold and [ *C;*(A;*C);( c;A ∨ ~c;B );true  ⇒  true ] }
+		   F;c;A;true ∨ F;c;( c;A ∨ ~c;B );true
+		⇒	{ finite and F;true = true also contradiction }
+		   F;c;A;true
+														▢
+
+Note: we could apply the G terms ( G (A ∨ C);true and G F;(c;A ∨ ~c;B);true  )  to one another before we use them together
+
+Lemma 1
+	(6)		[ c;*C  ⇒  F;c ]
+
+proof
+
+		   [ c;*C  ⇒  F;c ]
+		=	{ state restriction, shunting }
+		   [ *C  ⇒  (•c  ⇒  F;c) ]
+		⇐	{ induction }
+		   [ C;(•c ⇒ F;c) ∨ 1  ⇒  (•c  ⇒  F;c) ]
+		=	{ shunting then state restriction }
+		   [ "c;C";(•c ⇒ F;c) ∨ c  ⇒  F;c ]
+
+		   "c;C";(•c ⇒ F;c) ∨ c
+		⇒	{ (3) }
+		   X;"c;(•c ⇒ F;c)" ∨ c
+		=	{ state restriction }
+		   X;"( •c ∧ (•c ⇒ F;c) )" ∨ c
+		⇒	{ deduction }
+		   X;F;c ∨ c
+
+		  ⇒  F;c
+
+
+		   [ "c;C";(•c ⇒ F;c) ∨ c  ⇒  F;c ]
+		⇐	{ (3) then state restriction }
+		   [ X;( "•c ∧ (•c ⇒ F;c)" ) ∨ c  ⇒  F;c ]
+		⇐	{ deduction }
+		   [ X;F;c ∨ 1;c  ⇒  F;c ]
+		=	{ fold }
+		   true
+											▢
+
+Lemma 0
+	(7)		[ F;s ∧ G A;true  ⇒  *A;s ]
+
+proof 0
+			   [ G A;true ∧ F;s  ⇒  *A;s ]
+			=	{ shunting }
+			   [ F;s  ⇒  *A;s ∨ F;¬(A;true) ]
+			⇐	{ induction }
+			   [ X;*A;s ∨ X;F;¬(A;true) ∨ s  ⇒  *A;s ∨ F;¬(A;true) ]
+			=	{ ⇒ over ∨ and [ X;F ⇒ F ] to eliminate middle term of antecedent }
+			   [ X;*A;s ∨ s  ⇒  *A;s ∨ F;¬(A;true) ]
+			⇐	{ (C23) }
+			   [ X;*A;s ∨ s  ⇒  *A;s ∨ F;¬A;true ]
+			⇐	{ excluded middle }
+			   [ A;*A;s ∨ 1;¬A;*A;s ∨ s  ⇒  *A;s ∨ F;¬A;true ]
+			=	{ ⇒ over ∨ and [ 1 ⇒ F ] with [ *A;s ⇒ true ] 
+				  to eliminate middle term of antecedent }
+			   [ A;*A;s ∨ s  ⇒  *A;s ∨ F;¬(A;true) ]
+			=	{ unfold }
+			   [ *A;s  ⇒  *A;s ∨ F;¬(A;true) ]
+			=	{ predicate calculus }
+			   true
+														▢
+
+Lemma 0
+	(7)		[ F;s ∧ G A;true  ⇒  *A;s ]
+
+proof 1
+			   [ G A;true ∧ F;s  ⇒  *A;s ]
+			=	{ shunting }
+			   [ F;s  ⇒  *A;s ∨ F;¬(A;true) ]
+			⇐	{ induction }
+			   [ s ∨ "X;*A;s" ∨ X;F;¬(A;true)  ⇒  *A;s ∨ F;¬(A;true) ]
+			=	{ absorption and ; over ∨ }
+			   [  s ∨ A;*A;s ∨ (X ∧ ¬A);*A;s ∨ X;F;¬(A;true)  ⇒  *A;s ∨ F;¬(A;true) ]
+			=	{ _ ⇒ x over ∨ }
+			      [  1;s ∨ A;*A;s  ⇒  *A;s ∨ F;¬(A;true) ]
+			   ∧ [  (X ∧ ¬A);*A;s  ⇒  *A;s ∨ F;¬(A;true) ]
+			   ∧ [  X;F;¬(A;true)  ⇒  *A;s ∨ F;¬(A;true) ]
+			=	{ folding and [ X;F ⇒ F ] }
+			   [ (X ∧ ¬A);*A;s  ⇒  *A;s ∨ F;¬(A;true) ]
+			⇐	{ (C23) and strengthening }
+			   [ 1;¬A;*A;s  ⇒  F;¬A;true ]
+			=	{ [ 1 ⇒ F ] and [ *A;s  ⇒  true ] }
+			   true
+														▢
+
+Lemma 0
+	(7)		[ F;s ∧ G A;true  ⇒  *A;s ]
+
+proof 2
+			   [ G A;true ∧ F;s  ⇒  *A;s ]
+			=	{ shunting }
+			   [ F;s  ⇒  *A;s ∨ F;¬(A;true) ]
+			⇐	{ induction }
+			   [ s ∨ "X;*A;s" ∨ X;F;¬(A;true)  ⇒  *A;s ∨ F;¬(A;true) ]
+			=	{ absorption and ; over ∨ }
+			   [  s ∨ A;*A;s ∨ (X ∧ ¬A);*A;s ∨ X;F;¬(A;true)  ⇒  *A;s ∨ F;¬(A;true) ]
+			=	{ _ ⇒ x over ∨ }
+			      [  s ∨ A;*A;s  ⇒  *A;s ∨ F;¬(A;true) ]
+			   ∧ [  (X ∧ ¬A);*A;s  ⇒  *A;s ∨ F;¬(A;true) ]
+			   ∧ [  X;F;¬(A;true)  ⇒  *A;s ∨ F;¬(A;true) ]
+
+The latest step is taken because we can cut the antecedent and map each part to one term in the consequent.  Indeed, A;*A;s suggests unfolding *A and, luckily, we can find s alone as a disjunct. (X ∧ ¬A);*A;s contains a negation over an expression containing A and so does F;¬(A;true); thanks to (C23), we know how to bring the negation closer to A in the latter.  Finally, X;F;¬(A;true) is almost identical to F;¬(A;true) and we can bring the two closer.
+
+		[  s ∨ A;*A;s  ⇒  *A;s ∨ F;¬(A;true) ]
+
+			   *A;s ∨ F;¬(A;true)
+			⇐	{ strengthening }
+			   *A;s
+			=	{ folding }
+			   (1 ∨ A;*A) ; s
+			=	{ ; over ∨ }
+			   s ∨ A;*A;s
+
+		[  (X ∧ ¬A);*A;s  ⇒  *A;s ∨ F;¬(A;true) ]
+
+			   *A;s ∨ F;¬(A;true)
+			=	{ (C23) }
+			   *A;s  ∨  F ; (¬A;true ∨ 1)
+			⇐	{ strengthening }
+			   F ; ¬A ; true
+			⇐	{ [ 1 ⇒ F ] and [ s ⇒ true ] }
+			   1 ; ¬A ; s
+
+		[  X;F;¬(A;true)  ⇒  *A;s ∨ F;¬(A;true) ]
+
+			   *A;s ∨ F;¬(A;true)
+			⇐	{ strengthening }
+			   F;¬(A;true)
+			⇐	{ [ X;F ⇒ F ] }
+			   X;F;¬(A;true)
+
+														▢
+	(C23)	¬(A;true)  =  ¬A;true ∨ 1

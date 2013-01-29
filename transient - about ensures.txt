@@ -1,0 +1,72 @@
+Ensures
+=======
+
+provided
+(0)		tr p ∧ ¬q  
+			≡  p ∧ ¬q ↦ ¬p ∨ q
+			≡  G ( •(p ∧ ~q)  ⇒  F;•(~p ∨ q) )
+			≡  G F;•(~p ∨ q)
+
+(1)		p un q  
+			≡  G ( •p  ⇒  ( G •p ) ; S ; •q )
+
+		[ S  ⇒  F ]
+
+prove
+
+(2)		p ↦ q  
+			≡  G ( •p  ⇒  F ; •q )
+
+			   •p
+			⇒	{ (1) }
+			   ( G •p ) ; S ; •q
+			=	{ (10) }
+			   (G •p ∧ E)  ∨  (G •p ∧ F);S;•q
+			⇒	{ weakening with [ S ⇒ F ] and [F ≡ F;F] }
+			   G •p  ∨  F;•q
+
+			   G •p
+			=	{ (0) }
+			   G •p  ∧  F ; •(~p ∨ q)
+			⇒	{ Persistence rule, G is strengthening }
+			   F ; •(p ∧ (~p ∨ q))
+			⇒	{ Predicate calculus }
+			   F ; •q
+
+Proof of Transient
+================
+
+Let's try to implement tr with one action
+
+(0)		msc.(b {c} → A)
+			≡ G (G •b  ⇒  G F;c;A;true)
+
+(1)		G •(p  ⇒  b)
+
+(2)		G ( (p ∧ c);A  ⇒  X;~p  )
+		{ p ∧ c }  A { ~p } 
+prove
+
+(3)		tr p
+			≡  p ↦ ¬p
+			≡  G ( •p  ⇒  F;•~p )
+			≡  G F;•~p
+
+We prove F;•~p by assuming its negation, 
+
+(4)		G •p
+
+			   F ; ~p ; true
+			⇐	{ F ; F = F and [ X ⇒ F ] }
+			   F ; X ; ~p ; true
+			⇐	{ (2) }
+			   F ; (p ∧ c) ; A ; true
+			=	{ (4) }
+			   F ; c ; A ; true
+			⇐	{ G is strengthening }
+			   G   F ; c ; A ; true
+			⇐	{ (0) }
+			   G •b
+			=	{ (4) and (1) }
+			   true
+

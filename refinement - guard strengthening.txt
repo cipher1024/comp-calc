@@ -1,0 +1,46 @@
+	g ↦ h
+(0)		G (•g  ⇒  F;•h)
+
+	h un ¬g
+(1)		G (•h  ⇒  (G •h) ; S ; ¬•g)
+
+	sc.(h → A)
+(2)		G (G •h  ⇒  G F;A;true)
+
+prove
+
+	sc.(g → A)
+(3)		G (G •g  ⇒  G F;A;true)
+
+Lemma 
+(4)		G •g  ⇒  F ; (G •h)
+
+(C13)		[ F ; (G F;A;true)  ≡  G F;A;true ]
+
+proof of (3)
+
+		   G •g
+		⇒	{ (4) }
+		   F ; (G •h)
+		⇒	{ (2) }
+		   F ; (G F;A;true)
+		=	{ (C13) }
+		   G F;A;true
+
+proof of (4)
+
+		   true
+		=	{ G •g }
+		   •g
+		⇒	{ (0) }
+		   F ; •h
+		⇒	{ (1) }
+		   F ; (G •h) ; S ; ¬•g
+		=	{ G •g }
+		   F ; (G •h) ; S ; (¬•g ∧ •g)
+		=	{ contradiction ; (C11) }
+		   F ; (G •h) ; false
+		=	{ (10) }
+		   F ; (G •h)  ∧  E
+		⇒	{ weakening }
+		   F ; (G •h)

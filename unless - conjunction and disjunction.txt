@@ -1,0 +1,42 @@
+Conjunction
+
+Given 
+	(0)		p un q
+	(1)		p' un q'
+
+we have
+	(2)		(p ∧ p')  un  (p ∧ q') ∨ (p' ∧ q) ∨ (q ∧ q')
+
+	   (p ∧ p')  un  (p ∧ q') ∨ (p' ∧ q) ∨ (q ∧ q')
+	=	{ un to co }
+	   p ∧ p' ∧ (¬p ∨ ¬q') ∧ (¬p' ∨ ¬q) ∧ (¬q ∨ ¬q')  co  (p ∧ p') ∨ (p ∧ q') ∨ (p' ∧ q) ∨ (q ∧ q')
+	=	{ Complement twice; ∧ over ∨ }
+	   p ∧ p' ∧ ¬q' ∧ ¬q ∧ (¬q ∨ ¬q')  co  (p ∨ q) ∧ (p' ∨ q')
+	=	{ Absorption }
+	   p ∧ p' ∧ ¬q' ∧ ¬q  co  (p ∨ q) ∧ (p' ∨ q')
+	⇐	{ Conjunction }
+	   (p ∧ ¬q  co  p ∨ q)  ∧  (p' ∧ ¬q'  co  p' ∨ q')
+	=	{ co to un }
+	   (p un q)  ∧  (p' un q')
+
+
+Disjunction
+
+Given 
+	(0)		p un q
+	(1)		p' un q'
+
+we have
+	(2)		(p ∨ p')  un  (¬p ∧ q') ∨ (¬p' ∧ q) ∨ (q ∧ q')
+
+	   (p ∨ p')  un  (¬p ∧ q') ∨ (¬p' ∧ q) ∨ (q ∧ q')
+	=	{ un to co }
+	   (p ∨ p') ∧ (p ∨ ¬q') ∧ (p' ∨ ¬q) ∧ (¬q ∨ ¬q')  co  p ∨ p' ∨ (¬p ∧ q') ∨ (¬p' ∧ q) ∨ (q ∧ q')
+	=	{ ∧ over ∨; Complement twice }
+	   (p ∧ ¬q) ∨ (p' ∧ ¬q')   co  p ∨ p' ∨ q' ∨ q ∨ (q ∧ q')
+	=	{ Absorption }
+	   (p ∧ ¬q) ∨ (p' ∧ ¬q')   co  p ∨ p' ∨ q' ∨ q
+	⇐	{ disjunction }
+	   (p ∧ ¬q  co  p ∨ q)  ∧  (p' ∧ ¬q'  co  p' ∨ q')
+	=	{ co to un }
+	   (p un q)  ∧  (p' un q')

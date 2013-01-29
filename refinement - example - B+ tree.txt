@@ -1,0 +1,32 @@
+B+ tree
+
+module FUNCTION [KEYS, VAL]
+
+var
+	f ∈ keys → VAL
+	keys ⊆ KEYS
+
+methods
+	set (k, v)
+		k ∈ KEYS
+	⇒
+		   f' = f <+ k → v
+		∧ keys' = keys ∪ {k}
+
+	v <- get (k)
+		k ∈ keys
+	⇒
+		   v' = f.k
+		∧ f' = f
+		∧ keys' = keys
+
+	b <- has (k)
+		   b' = k ∈ keys
+		∧ f' = f
+		∧ keys' = keys'
+
+	b, v <- try_get (k)
+		   b' = k ∈ keys
+		∧ (k ∈ keys  ⇒  v' = f.k)
+		∧ f' = f ∧ keys' = keys
+

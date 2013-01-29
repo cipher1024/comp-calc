@@ -1,0 +1,42 @@
+	   G (G •g  ⇒  G F;A;true)
+	⇐	{  }
+	   G (G •g  ⇒  G *(F;~c;B);F;(c;A);true)
+
+	   G F;(c;A ∨ ~c;B);true
+	⇒	{  }
+	   G F;c;A;true
+
+	∞(F;A)
+	
+	   G F;c;A;true
+	
+
+c co c  ∨  A
+	G ( (•c ⇒ X;•c)  ∨  A;true)
+g ↦ c
+	G (•g ⇒ F;•c)
+
+*(p;X);p  ≡  G •p ∧ F
+
+X ∧ (•p ⇒ X;•p)
+
+G (F;A;true)  =  ∞(F;A)
+
+∞(*C;*(A;*C);A)
+
+(C22)	[ ∞(x∨y)  ≡  *(*y;x);∞y ∨ ∞(*y;x) ]
+
+G ( (~c ∧ g);B;true  ⇒  X;d;true )
+
+G (•g ⇒ F;•c)
+c co c  ∨  A
+
+C = X ∧ (•c ⇒ X;•c)
+
+		   ∞( F;(c;A ∨ ~c;B) )
+		=	{ ; over ∨ }
+		   ∞( F;c;A ∨ F;~c;B )
+		=	{ (C22) }
+		   *( *(F;~c;B);F;c;A );∞(C;*(A;C);~c;B) ∨ ∞( *(F;~c;B);F;c;A )
+
+

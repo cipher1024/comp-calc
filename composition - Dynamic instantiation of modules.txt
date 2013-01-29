@@ -1,0 +1,58 @@
+Dynamic instantiation of modules
+==============================
+
+〈∀p:: p un r〉
+r is stable
+
+{ true } Q { s∧r }
+[ s ∧ P  ⇒  G (p ⇒ F;q) ]  ⇒  [ r → P [] ¬r → Q   ⇒   G (p∧r ⇒ F;q) ]
+[ s ∧ P  ⇒  G (p ⇒ (G p);S;q) ]  ⇒  [ r → P [] ¬r → Q   ⇒   G (p∧r ⇒ (G p∧r);S;q) ]
+
+p ∧ r ∧ ¬q  co  (p ∧ r) ∨ q
+
+		   p ∧ r ∧ ¬q
+		co	{ r is stable and p un q }
+		   r ∧ (p ∨ q)
+		⇒	{ predicate calculus }
+		   (r ∧ p) ∨ q
+
+(G •r) ; X ; ¬•r   =   r ; X ; true
+
+		   (G •r) ; X ; ¬•r
+		⇒	{ G is strengthening }
+		   r ; true ; X ; ¬•r
+		=	{ true and X commute }
+		   r ; X ; true ; ¬•r
+		⇒	{ top of ⇒ }
+		   r ; X ; true
+
+
+true ; X  =  X ; true
+
+		   (G •r) ; X ; ¬•r
+		=	{ (CC10) }
+		   (F ∧ G •r) ; X ; ¬•r  ∨  (E ∧ G •r)
+
+G (p ⇒ F;q)  =  F ; G (p ⇒ F;q)
+
+		   G (p∧r ⇒ F;q)
+		⇐	{ substitution }
+		   G (p ⇒ F;q) ∧ G r
+		⇐	{ antecedent }
+		   s ∧ P ∧ G r
+		=	{ add guard, using G r }
+		   s ∧ (r → P [] ¬r → Q) ∧ G r
+		⇐	{ r is stable }
+		   r ∧ s ∧ (r → P [] ¬r → Q)
+
+¬r → X;r
+
+		   G ¬r  ∨  G (p ⇒ F;q)
+		=	{ complement }
+		   G ¬r  ∨  ( F;r ∧ G (p ⇒ F;q) )
+
+
+lemma 0
+
+∞(r → A [] ¬r → B)  =  ∞A  ∨ *A;∞B
+	if r is stable

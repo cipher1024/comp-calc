@@ -1,0 +1,19 @@
+
+	[〈∀ i:: p.i ↦ q〉 ≡ 〈∃ i:: p.i〉↦  q ]
+
+(0)	[ p ↦ q   ≡   G (•p  ⇒  F;•q) ]
+
+proof:
+
+		 〈∀ i:: p.i ↦ q〉
+		=	{ (0) }
+		 〈∀ i:: G (•p.i  ⇒  F;•q)〉
+		=	{ G is universally conjunctive }
+		   G〈∀ i:: •p.i  ⇒  F;•q〉
+		=	{ ⇒ over ∃ }
+		   G (〈∃ i:: •p.i〉⇒  F;•q  )
+		=	{ • over ∃ }
+		   G (  •〈∃ i:: p.i〉⇒   F;•q  )
+		=	{ (0) }
+		 〈∃ i:: p.i〉↦  q
+		   

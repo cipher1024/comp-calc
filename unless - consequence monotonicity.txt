@@ -1,0 +1,11 @@
+It is called consequence weakening in Chandy & Misra but since we're using it as a calculus, we need to using both as a strengthening and as a weakening.  Monotonicity illustrate this best.
+
+(0)		[ ( (p un q)  ⇒  (p un r) )  ⇐  G •(q ⇒ r) ]
+
+We will prove (0) by taking shunting the implication and manipulating only (p un r).  Since we have a rule to manipulate •p ( p un q ), we will start with that side of the demonstration.
+
+		   •p
+		⇒	{ p un q }
+		   (G •p) ; S ; •q
+		⇒	{ G •(q ⇒ r) }
+		   (G •p) ; S ; •r

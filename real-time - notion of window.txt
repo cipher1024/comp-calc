@@ -1,0 +1,39 @@
+	p  en  q  within  [u,v]
+⇐	   p ∧ ¬q  un  q ∧ u ≤ t - △p ≤ v
+	∧ tr  p ∧ ¬q  within  [u,v]
+
+
+	   tr  p within [u,v]
+	≡
+	 〈∃ g,a:  g → a ∈ F:  [ p ∧ u ≤ t - △p ≤ v  ⇒  g ] ∧ { p } a { ¬p }〉∧  
+
+@p ≡ △p = now ∧ p
+∇n  ≡  △n = now
+‡T  =  now - T
+
+p ↦ q within [u,v]
+@(p ∧ ¬q) ∧ ‡T = 0 ↦ @q ∧ u ≤ ‡T ≤ v
+
+
+
+The notion of window, I think is important when it comes to real-time properties. Although it is argued that real-time properties are all, in truth, safety properties, the notion of liveness (or progress) is still, I believe, important.  With respect to windows, progress properties are good at saying that something will happen within the window and safety are best at saying that some things won't happen outside of some windows. The fact that such properties can be all translated as safety properties is irrelevant because they are certainly clearer as progress properties.
+
+p ↦ q within [u,v]
+	the window drawn from u units after @p to v units after @p contains one transition @q
+
+now-△p ≤ v  un  q
+	the safety property does not support window breaking
+	the difference here is that, if a 
+
+	to preclude window breaking:
+u ≤ now-△p ≤ v  ∧ △p = T   un   q
+
+¬q un u ≤ now-△p ≤ v
+	a transition @q only occurs in a [u,v] window after @p and, provided p does not transit to false then true in the mean time, it can happen in the window.
+	the safety property does not support window breaking
+
+	to preclude window breaking:
+¬q ∧ △p = T un u ≤ now-△p ≤ v
+
+
+hb ↦ hb within [u,v]

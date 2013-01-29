@@ -1,0 +1,115 @@
+	@(n=N) ↦ @(n=N+1) within [u,v+t]
+⇐		{ disjunction }
+	@(n=N) ∧ skip ↦ @(n=N+1) within [u,v+t]
+	@(n=N) ∧ ¬skip ↦  @(n=N+1) within [u,v]
+
+ensures
+	p ↦ q within [u,v]
+⇐
+	p en q within [u,v]
+
+	p en q within [u,v]
+=
+	p  un  q ∧ u ≤ now-△p ≤ v
+	tr p ∧ ¬q  within  [u, v]
+
+	tr p  within  [u, v]
+=
+	tr p ∧ u ≤ now-△p
+	now-△p ≤ v  un  q
+
+leads-to
+	p ↦ q within [u, v]
+⇐
+	p ↦ q within [s, t]
+	invariant u ≤ s ∧ t ≤ v
+
+
+Theorems from [Misra2001]
+========================
+
+Properties
+---------
+
+(5)	invariant △p ≤ now
+(4)	stable r ≤ now
+
+(3)	p ∧ △p = r  co  △p = r
+(4)	¬p ∧ △p = r  co  (¬p ∧ △p = r) ∨ (p ∧ △p = now)
+
+stable r ≤ △p
+
+Theorem 0
+---------
+
+	invariant ( p ⇒ q ) 
+⇒ 	invariant p ⇒ △q ≤ △p
+
+	p ⇒ △q ≤ △p  co  p ⇒ △q ≤ △p
+⇐		{ disjunction }
+	   p ∧ △q ≤ △p  co  p ⇒ △q ≤ △p
+	∧ ¬p  co  p ⇒ △q ≤ △p
+
+(2)	p ∧ △p = r ∧ q ∧ △q = s  co  △p = r ∧ △q = s
+	conjunction of (3) and (3) with p := q
+
+		   p ∧ △q ≤ △p ∧ △p = r ∧ △q = s
+		⇒	{ Leibniz }
+		   p ∧ s ≤ r ∧ △p = r ∧ △q = s
+		=	{ invariant p ⇒ q }
+		   p ∧ q ∧ s ≤ r ∧ △p = r ∧ △q = s
+		co	{ (2) and s and r are free }
+		   s ≤ r  ∧  △p = r ∧ △q = s
+		⇒	{ Leibniz }
+		   △q ≤ △p
+		⇒	{ weakening }
+		   p  ⇒  △q ≤ △p
+
+		   ¬p ∧ △p = r ∧ △q = s
+		co	{ conjunction between (4) and (1) }
+		   ( (¬p ∧ △p = r) ∨ (p ∧ △p = now) ) ∧ ( △q = s ∨ (q ∧ △q = now) )
+		⇒	{ predicate calculus }
+		   ¬p ∨ (p ∧ △p = now ∧ △q = s) ∨ (p ∧ △p = now ∧ q ∧ △q = now)
+		=	{ (5) }
+		   ¬p ∨ (p ∧ △p = now ∧ △q = s ∧ △q ≤ now) ∨ (p ∧ △p = now ∧ q ∧ △q = now) 
+		⇒	{ Leibniz }
+		   ¬p ∨ (p ∧ △q ≤ △p) ∨ (p ∧ △q = △p) 
+		=	{ ≤ is reflexive ; predicate calculus }
+		   p  ⇒  △q ≤ △p
+
+(0)	△p = r  co  △p = r ∨ (p ∧ △p = now)
+(1)	△q = s  co  △q = s ∨ (q ∧ △q = now)
+
+Theorem 1
+---------
+
+invariant  p  ⇒  (△¬p ≤ △p)
+
+	   p  ⇒  (△¬p ≤ △p)  co  p ⇒ (△¬p ≤ △p)
+	=	{ disjunction }
+	   p ∧ (△¬p ≤ △p)  co  p ⇒ (△¬p ≤ △p)
+	   ¬p  co  p ⇒ (△¬p ≤ △p)
+
+	   p ∧ (△¬p ≤ △p) ∧ △¬p = r ∧ △p = s
+	⇒	{ Leibniz }
+	   p ∧ r ≤ s ∧ △¬p = r ∧ △p = s
+	co	{ r ≤ s is stable and (3) and (4) }
+	   r ≤ s ∧ △p = s ∧ ( (p ∧ △¬p = r) ∨ (¬p ∧ △¬p = now) )
+	⇒	{ predicate calculus }
+	      (r ≤ s ∧ △p = s ∧ p ∧ △¬p = r) ∨ ¬p
+	⇒	{ Leibniz }
+	   (△¬p ≤ △p ∧ p) ∨ ¬p
+	=	{ predicate calculus }
+	   p  ⇒  △¬p ≤ △p
+
+	   ¬p  ∧  △p = s  ∧  △¬p = r
+	co	{ (3) and (4) }
+	   △¬p = r  ∧  ( (¬p ∧ △p = s) ∨ (p ∧ △p = now) )
+	⇒	{ predicate calculus }
+	   ¬p  ∨  (△¬p = r ∧ p ∧ △p = now)
+	=	{ invariant △¬p ≤ now }
+	   ¬p  ∨  (△¬p = r ∧ p ∧ △p = now ∧ △¬p ≤ now)
+	⇒	{ Leibniz }
+	   ¬p  ∨  (p ∧ △¬p ≤ △p)
+	=	{ predicate calculus }
+	   p  ⇒  △¬p ≤ △p

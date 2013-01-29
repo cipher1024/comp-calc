@@ -1,0 +1,59 @@
+Modularity:
+
+Union: 
+
+	[]: Mod x Mod → Mod
+	[] is monotonic
+	Mod includes environmental constraints
+
+Superposition:
+
+	o if f is a superposition then  f : Mod → Mod
+	o f is monotonic
+	o in f.m, all the assignments to variables of m are also present in m.
+	o m ⊑ f.m
+	o available operations
+		* action augmentation (in terms of fresh variables)
+		* action addition (in terms of fresh variables)
+		* schedule replacement
+		* this makes the application of two superposition commute.
+
+module function
+	o must be monotonic
+		* delayed module inititialization
+			-- this does not satisfy m ⊑ f.m but rather creates a new module from an old one.
+		* repeated module activation:
+			- sequential
+			- asynchronous
+
+Method call
+
+	in a program, there are external variables and local variables.  Any statement of the program can modify the local variables but only procedure calls can read and write to the external variables.
+	* can be used as part of a union or superposition
+
+Enabling, disabling modules
+
+What is a module?
+---------------
+
+A module is made of two part: its behavior and its environment
+
+Behavior includes:
+		-- describes things the module has control over. The variables can be data refined, 
+		-- the actions and methods can be refined as well and the properties can be 
+		-- strengthened and implemented. Properties include liveness and safety with a 
+		-- special attention to invariants.
+	state variables
+	actions (scheduled fairly)		\ according to Misra
+	methods					/  both are procedures
+	(conditional) properties
+
+	procedures can call methods 
+
+Environment:
+		-- describes things 
+		-- 
+	method calls supported by environment
+	state variables
+	two-state constraint
+

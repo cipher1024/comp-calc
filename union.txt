@@ -1,0 +1,77 @@
+
+	P = (step, sched)
+
+	P ⊑ Q   ≡   [ step.P ⇐ step.Q ] ∧ [ ex.P  ⇐  ex.Q ]
+
+	(A, F) [] (B, G)  =  (A ∨ B, F ∧ G)
+
+	P [] Q  ⊑  P [] R   ⇐   Q ⊑ R
+
+	(A, F) ⊑ (B, G)   ≡   [ A ⇐ B ] ∧ [ (saf.A ∧ F)  ⇐  (saf.B ∧ G) ]
+
+by convention, 
+	Q = (Qp, Qd)
+
+	and Qf = saf.(Qp ∨ J.w)
+
+		schedule	d
+		step		p
+		safety		f
+
+and so on
+we therefore have:
+
+	J.v  ⇒  Pp
+	J.w  ⇒  Qq
+
+	   Pp ∧ Qq
+	=	{ ⇒ }
+	   (Pp ∨ J.v) ∧ (Qq ∨ J.w)
+	=	{ ∧ over ∨ }
+	   (Pp ∨ J.v) ∧ (Qq ∨ J.w)
+
+	   (Pp ∧ Qq) ∨ (Pp ∧ J.w) ∨ (Qq ∧ J.v) ∨ J.(v∪w)
+
+		P  =  (Pp ∨ J.v, Pd)
+	(0)	P [] Q  =  ( (Pp ∧ J.w) ∨ (Qp ∧ J.v), Pd ∧ Qd)
+	(1)	P ⊑ Q  ≡  [ Pp ⇐ Qp ] ∧ [ (Pf ∧ Pd)  ⇐  (Qf ∧ Qd) ]
+
+	(*)	P [] Q  ⊑  P [] R
+			≡   [ Pp ∨ Qp  ⇐  Pp ∨ Rp ]  ∧  [ saf.(Pp ∨ Qp) ∧ Pd ∧ Qd   ⇐   saf.(Pp ∨ Rp) ∧ Pd ∧ Rd ]
+
+Monotonicity takes care of both Pp terms in the left conjunct and of both Pd terms in the right conjunct.  It gets the left conjunct in the proper shape and we can manipulate the right conjunct in a strengthening chain while taking the left conjunct as an hypothesis.
+
+J.v ∧ J.w  =  J.(v∪w)
+
+Pp ∧ Qp  ⇐  Pp ∨ Qp
+
+	   (A ∨ B) ∧ (C ∨ D)
+	=	{ ∧ over ∨ }
+	   (A ∧ C) ∨ (A ∧ D) ∨ (B ∧ C) ∨ (B ∧ D)
+	⇐	{ strengthening }
+	   (A ∧ C) ∨ (B ∧ D)
+
+		   [ saf.( (Pp ∧ J.w) ∨ (Qp ∧ J.v) ) ∧ Pd ∧ Qd   ⇐   saf.( (Pp ∧ J.w) ∨ (Qp ∧ J.v) ) ∧ Pd ∧ Rd ]
+		⇐	{ left conjunct and saf is monotonic }
+		   [ saf.(Pp ∨ Qp) ∧ Pd ∧ Qd   ⇐   saf.(Pp ∨ Qp) ∧ Pd ∧ Rd ]
+
+		   [ A ∧ B  ⇐  A ∧ C ]  ⇐  [ B ⇐ C ]
+		=	{  }
+		   [ (A ∧ C) ∨ (B ∧ D)  ⇐  (W ∧ C) ∨ (B ∧ D) ]  ⇐  [ A  ⇐  W ]
+			[ D ⇒ A ]
+			[ D ⇒ W ]
+
+(0)	J.v  ⇒  A
+(1)	J.w ⇒ B
+
+	   G A;true ∧ 
+	=	{ 
+	   G (A ∨ J.v);true
+
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+
+st p  ≡  G (•p  ⇒  (G •p) ; S ; false)
+
+		   (G •p) ; S ; false
+		=	{ (10.i) }
+		   (G •p) ; S  ∧  E
+		=	{ (10.vi) }
+		   (G •p  ∧  F);(S ∧ E)  ∨  (G •p  ∧  E)
+
+		   (G •p  ∧  F) ; (S ∧ E)
+		=	{ [ S ⇒ F ] }
+		   (G •p  ∧  F) ; false
+		=	{ (10.i) }
+		   G •p  ∧  F  ∧  E
+		=	{ (9) }
+		   false

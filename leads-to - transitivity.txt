@@ -1,0 +1,24 @@
+
+	[ (p ↦ q) ∧ (q ↦ r)  ⇒  (p ↦ r) ]
+
+(0)		[ (p ↦ q)   ≡   G (•p  ⇒  F;•q) ]
+(1)		[ s ∧ G t   ≡   G (s ∧ t) ]
+	with s persistent
+
+proof
+
+		   (p ↦ q) ∧ (q ↦ r)
+		=	{ (0) twice }
+		   G (•p  ⇒  F;•q)  ∧  G (•q  ⇒  F;•r)
+		=	{ (s ∧) over G with persistent s }
+		   G ( (•p ⇒ F;•q)  ∧  G (•q  ⇒  F;•r) )
+		⇒	{ Predicate calculus }
+		   G ( •p   ⇒   F;•q ∧ G (•q  ⇒  F;•r) )
+		⇒	{ Persistence rule then G is strengthening }
+		   G ( •p   ⇒   F;(•q ∧ (•q  ⇒  F;•r)) )
+		⇒	{ Predicate calculus }
+		   G ( •p   ⇒   F;F;•r )
+		=	{ [ F ≡ F;F ] }
+		   G ( •p   ⇒   F;•r )
+		=	{ (0) }
+		   p ↦ r

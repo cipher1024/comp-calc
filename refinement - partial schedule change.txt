@@ -1,0 +1,49 @@
+Note
+
+A stronger theorem can be found in "composition - superposition - schedule change"
+
+(end of note)
+
+Independent schedule change
+
+		  G (G •(c∧d) => G F;A;true)
+		<=	{ }
+		  G (G •(c∧g) => G F;A;true) 
+		
+			 
+	(0)		d ↦ g			G (•d => F;•g)
+	(1)		g un ¬d		G (•g => (G •g);•~d)
+ 
+	We will start by confronting the antecedent of both implications
+
+		   [ G •(c∧d)   ⇒   G •(c∧g) ]
+		=	{ G and • over ∧ }
+		   [ G •c  ∧  G •d   ⇒   G •(c∧g) ]
+		=	{ shunting }
+		   [ G •c   ⇒   ( G •d   ⇒   G •(c∧g) ) ]
+
+		   G •d
+		=	{ (0) }
+		   G F;•g  ∧  G •d
+		=>	{ (1) }
+		   G F;(G •g);•~d  ∧  G •d
+		=>	{ subtitution }
+		   G F;( G •g );false
+		=>	{ [ false ⇒ 1 ] }
+		   G F;(G •g)
+		=>	{ G is strengthening }
+		   F;(G •g)
+		=	{ G •c }
+		   F;( G •(c∧g) )
+
+	(2)		G •(c∧d)   =>   F;( G •(c∧g) )
+		
+		  G (G •(c∧d)  =>  G F;A;true)
+		<=	{ (2) }
+		  G (F;( G •(c∧g) )  =>  G F;A;true)
+		=	{ (C13) }
+		  G (F;( G •(c∧g) )  =>  F;(G F;A;true))
+		<=	{ (C16) }
+		  G (G •(c∧g)  =>  G F;A;true) 
+
+[]

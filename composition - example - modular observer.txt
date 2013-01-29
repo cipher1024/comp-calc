@@ -1,0 +1,175 @@
+observer
+========
+
+Posts
+-----
+
+p	-- set of posts
+r 	-- for every post: has it been read?
+
+J0:	r ∈ p → |B
+
+add_post (x)
+	require
+	G0	¬x ∈ p
+	do
+	S0	   p' = p ∪ {x}
+	S1	∧ r' = r <+ (x → ⊥)
+	end
+
+	invariance of J0
+
+		   r' ∈ p' → |B
+		=	{ S1 and S0 }
+		   r <+ (x → ⊥)  ∈  p∪{x} → |B
+		⇐	{ overriding with x → ⊥ ∈ {x} → |B }
+		   r  ∈  p → |B
+		=	{ J0 }
+		   true
+
+read_post (x)
+	require
+		x ∈ p
+	do
+	S0	p' = p
+	S1	r' = r <+ (x → ⊤)
+	end
+
+	invariance of J0
+
+		   r' ∈ p' → |B
+		=	{ read_post }
+		   r <+ (x → ⊤)  ∈  p → |B
+		=	{ x ∈ p, hence p = p ∪ {x} }
+		   r <+ (x → ⊤)  ∈  p∪{x} → |B
+		⇐	{ overriding }
+		   r  ∈  p → |B   ∧   (x → ⊤)  ∈  {x} → |B
+		=	{ type of (x → ⊤) and J0 }
+		   true
+
+Reading list, superposed to Posts
+---------------------------
+
+ls 	-- set of lists of updates
+ct 	-- content of lists
+nu 	-- number of unread elements
+
+	J0:	ct ∈ ls ↔ p
+	J1:	nu ∈ ls → |N
+	J2:	nu.x  =〈+i: x(ct)i ∧ ¬r.i: 1〉
+			(∀x: x ∈ ls)
+
+superpose on add_post (x)
+
+	〈∃s: s ⊆ ls:  
+		S2:	ct' = ct ∪ s ⨯ {x}
+		S3:	nu' = nu  <+〈y: y ∈ s: nu.y + 1〉
+			〈∀y: y ∈ s: nu'y = nu.y + 1〉
+			〈∀y: ¬y ∈ s: nu'y = nu.y〉
+		〉
+
+	invariance of J0
+
+		   ct' ∈ ls ↔ p'
+		=	{ S0 and S2 }
+		   ct ∪ s ⨯ {x} ∈ ls ↔ p∪{x}
+		⇐	{ ∪ is closed on relations }
+		      ct ∈ ls ↔ p∪{x}
+		   ∧ s ⨯ {x} ∈ ls ↔ p∪{x}
+		⇐	{ type tightening with s ⊆ ls }
+		      ct ∈ ls ↔ p
+		   ∧ s ⨯ {x} ∈ s ↔ {x}
+		=	{ J0 and typing }
+		   true
+
+	invariance of J1
+
+	because of ns <+ f with ns's domain constant and the domain of f a subset of that of ns.
+
+		   nu' ∈ ls → |N
+		=	{ S3 }
+		   nu  <+〈y: y ∈ s: nu.y + 1〉∈   ls → |N
+		=	{ s ⊆ ls }
+		   nu  <+〈y: y ∈ s: nu.y + 1〉∈   ls∪s → |N
+		⇐	{ overriding }
+		   nu  ∈   ls → |N
+		∧〈y: y ∈ s: nu.y + 1〉∈   s → |N
+		=	{ typing }
+		   nu  ∈   ls → |N
+
+	invariance of J2
+
+		 〈+i: y(ct')i ∧ ¬r'.i: 1〉
+		=	{ S1 and S2 }
+		 〈+i: y(ct ∪ s⨯{x})i ∧ ¬( r <+ (x → ⊥) ).i: 1〉
+		=	{ split around i = x }
+		 〈+i: y(ct ∪ s⨯{x})x ∧ ¬( r <+ (x → ⊥) ).x ∧ i=x: 1〉
+		+〈+i: y(ct ∪ s⨯{x})i ∧ ¬r.i ∧ i≠x: 1〉
+		=	{ relations }
+		 〈+i: y ∈ s ∧ i=x: 1〉
+		+〈+i: y(ct)i ∧ ¬r.i ∧ i≠x: 1〉
+		=	{ G0 }
+		 〈+i: y ∈ s ∧ i=x: 1〉
+		+〈+i: y(ct)i ∧ ¬r.i: 1〉
+		=	{ J2 }
+		 〈+i: y ∈ s ∧ i=x: 1〉
+		+  nu.y
+
+		case y ∈ s
+		 〈+i: y ∈ s ∧ i=x: 1〉
+		+  nu.y
+		=	{ one point rule }
+		   nu.y + 1
+		=	{ S3 }
+		   nu'.y
+
+		case ¬y ∈ s
+		 〈+i: y ∈ s ∧ i=x: 1〉
+		+  nu.y
+		=	{ empty range }
+		   nu.y + 0
+		=	{ S3 }
+		   nu'.y
+
+
+superpose on read_post (x)
+
+		S2: ct' = ct
+
+	invariance of J0
+
+		   ct' ∈ ls ↔ p'
+		=	{ S0 and S2 }
+		   ct ∈ ls ↔ p
+
+	invariance of J2
+
+		 〈+i: y(ct')i ∧ ¬r'.i: 1〉
+		=	{ S2 and S1 }
+		 〈+i: y(ct)i ∧ ¬(r <+ (x → ⊤) ).i: 1〉
+		=	{ case distinction around i = x }
+		 〈+i: y(ct)x ∧ ¬⊤ ∧ x = i: 1〉
+		+ 〈+i: y(ct)i ∧ ¬r.i ∧ x ≠ i: 1〉
+		=	{ empty range; + z - z to complement range }
+		 〈+i: y(ct)i ∧ ¬r.i ∧ x ≠ i: 1〉+〈+i: y(ct)i ∧ ¬r.i ∧ x = i: 1〉
+		- 〈+i: y(ct)i ∧ ¬r.i ∧ x = i: 1〉
+		=	{ merge ranges }
+		 〈+i: y(ct)i ∧ ¬r.i: 1〉
+		- 〈+i: y(ct)i ∧ ¬r.i ∧ x = i: 1〉
+		=	{ J2 }
+		   nu.y
+		- 〈+i: y(ct)i ∧ ¬r.i ∧ x = i: 1〉
+
+		nu'.y  =  nu.y - 1
+		if 〈+i: y(ct)i ∧ ¬r.i ∧ x = i: 1〉=   1
+
+		nu'.y  =  nu.y
+		if 〈+i: y(ct)i ∧ ¬r.i ∧ x = i: 1〉=   0
+
+		〈+i: y(ct)i ∧ ¬r.i ∧ x = i: 1〉=   1
+		if y(ct)x ∧ ¬r.x
+
+		〈+i: y(ct)i ∧ ¬r.i ∧ x = i: 1〉=   1
+		if ¬y(ct)x ∨ r.x
+
+	S3:  nu'  =  nu  <+〈y: y(ct)x ∧ ¬r.x: nu.y - 1〉

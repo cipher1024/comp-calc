@@ -1,0 +1,69 @@
+		@p ↦ @q within [u,v]
+		@q ↦ @r within [s,t]
+	⇒
+		@p ↦ @r within [u+s, v+t]
+
+	(0)		@p ↦ @r within [u, v]  ≡〈∀T:: @p ∧ T=now ↦ @r ∧ u ≤ ‡T ≤ v〉
+	(1)		‡T  =  now - T
+
+transitivity
+
+	p ↦ r within [u+s, v+t]
+=		{ (0)	 }
+	〈∀T:: p ∧ T=now  ↦  r ∧ u+s ≤ now-T ≤ v+t〉
+⇐		{ transitivity }
+	〈∀T:: (p ∧ T=now  ↦  q ∧ u ≤ now-T ≤ v) ∧ (q ∧ u ≤ now-T ≤ v  ↦  r ∧ u+s ≤ now-T ≤ v+t)〉
+=		{ symmetry of ∧ }
+	〈∀T:: p ∧ T=now  ↦  q ∧ u ≤ ‡T ≤ v〉∧〈∀T:: q ∧ u ≤ now-T ≤ v  ↦  r ∧ u+s ≤ now-T ≤ v+t〉
+=		{ (0) }
+	  p  ↦  q  within [u,v]  ∧〈∀T:: q ∧ u ≤ now-T ≤ v  ↦  r ∧ u+s ≤ now-T ≤ v+t〉
+
+
+	〈∀T:: q ∧ u ≤ now-T ≤ v  ↦  r ∧ u+s ≤ now-T ≤ v+t〉
+=		{ one-point rule and disjunction }
+	〈∀T,U:  u ≤ U-T ≤ v:  q ∧ U = now  ↦  r ∧ u+s ≤ now-T ≤ v+t〉
+=		{ arithmetic }
+	〈∀T,U:  T+u ≤ U ≤ T+v:  q ∧ U = now  ↦  r ∧ T+u+s ≤ now ≤ T+v+t〉
+⇐		{ (anti-)monotonicity }
+	〈∀T,U:  T+u ≤ U ≤ T+v:  q ∧ U = now  ↦  r ∧ U+s ≤ now ≤ U+t〉
+⇐		{ unused variable T and arithmetic }
+	〈∀U::  q ∧ U = now  ↦  r ∧ s ≤ now-U ≤ t〉
+=		{ (0) }
+	q ↦ r  within [s, t]
+
+	U ≤ T+v
+⇒	( now ≤ U+t  ⇒  now ≤ T+v+t )
+
+	T+u ≤ U
+⇒	( U+s ≤ now  ⇒  T+u+s ≤ now )
+
+disjunction
+
+	U  =〈↓i:: u.i〉
+	V  =〈↑i:: v.i〉
+
+	〈∃i:: p.i〉↦  q  within [U, V]
+⇐
+	〈∀i:: p.i  ↦  q  within [u.i, v.i]〉
+
+	〈∃i:: p.i〉↦  q  within [U, V]
+=		{ (0) }
+	〈∀T::〈∃i:: p.i〉∧  T=now  ↦  q ∧ U ≤ now-T ∧ now-T ≤ V〉
+=		{ ≤ over ↓ and ≤ over ↑ }
+	〈∀T::〈∃i:: p.i〉∧  T=now  ↦  q ∧〈∃i:: u.i ≤ now-T〉∧〈∃i:: now-T ≤ v.i〉〉
+⇐		{ predicate calculus }
+	〈∀T::〈∃i:: p.i ∧ T=now〉↦〈∃i::  q ∧ u.i ≤ now-T ∧ now-T ≤ v.i〉〉
+⇐		{ generalized disjunction }
+	〈∀T,i::  p.i ∧ T=now  ↦  q ∧ u.i ≤ now-T ∧ now-T ≤ v.i〉
+=		{ (0) }
+	〈∀i::  p.i  ↦  q  within  [u.i, v.i]〉
+
+generalized disjunction
+
+	〈∃i:: p.i〉↦〈∃i:: q.i〉within [U, V]
+⇐		{ disjunction }
+	〈∀i:: p.i  ↦〈∃j:: q.j〉within [u.i, v.i]〉
+⇐		{ instantiation }
+	〈∀i:: p.i  ↦  q.i within [u.i, v.i]〉
+
+

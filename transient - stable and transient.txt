@@ -1,0 +1,17 @@
+
+		[ (st p) ∧ (tr p)  ≡  (inv ¬p) ]
+
+st p  ≡  G (•p  ⇒  G •p)
+tr p  ≡  G F;•~p
+
+		   (•p  ⇒  G •p)  ∧  F ; •~p
+		=	{ predicate calculus }
+		   •p ∨ ¬(F ; •~p)   ⇒   G •p ∧ F;•~p
+		=	{ dual of G }
+		   •p ∨ ¬(F ; •~p)   ⇒   G •p ∧ ¬G •p
+		=	{ Contradiction }
+		   •p ∨ ¬(F ; •~p)   ⇒   false
+		=	{ predicate calculus }
+		   •~p ∧ F ; •~p
+		=	{ identity and monotonicity }
+		   •~p

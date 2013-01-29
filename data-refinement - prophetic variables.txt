@@ -1,0 +1,26 @@
+Data refinement in Unit-B:
+
+variables are owned by one module.  That module is allowed to data refine it and, for that reason, all the other variables have to use accessors to read and write to it.
+
+Decomposition:
+	partition variables
+	introduce methods and method calls
+
+〈var x:: s〉⊑  t
+
+(Var, seq (Var → Val))
+
+(x, n, s)
+	T0:		x ⊆ Var
+	T1:		n ∈ |N
+	T2:		s ∈ x → seq (Val)
+	T3:		〈∀v: v ∈ x: #s.v = n〉
+
+(x, n, s) ↓ m  =  (x, m,〈v: v ∈ x: s.v ↓ m〉)
+	with m ≤ n
+
+(x, n, s) ↓ m  =  (x, n-m,〈v: v ∈ x: s.v ↑ m〉)
+	with m ≤ n
+
+
+〈var x:: s〉.(y, n, t)  ≡〈∃x,u: ¬x ∈ y ∧ #u = #t:  s.(y∪{x}, n, t <+ (x → u))〉

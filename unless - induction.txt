@@ -1,0 +1,423 @@
+lemmas		1
+
+Note:
+
+	p;•q  =  •(p ∧ q)  is going to be applied anonymously
+	distribution of • over logical connector applied anonymously
+
+Note:
+
+	Lemma labels prefixed with C are proven in the "computation calculus" file 
+
+############
+  Invariance
+############
+
+[ •p ∧ G A;true  ⇒  G •p ]  ⇐  [ p;A  ⇒  X;p ]
+
+		  [ •p ∧ G A;true  ⇒  G •p ]
+		⇐	{ Induction using the weakest 
+			  fixed point definition of G }
+		  [ •p ∧ G A;true  ⇒  (X;(•p ∧ G A;true) ∨ 1) ∧ •p ]
+		⇐	{ Predicate calculus }
+		  [ •p ∧ G A;true  ⇒  X;(•p ∧ G A;true) ]
+		=	{ Persistence rule }
+		  [ •p ∧ G A;true  ⇒  X;•p ]
+		⇐	{ Predicate calculus }
+		  [ G A;true  ⇒  ( •p  ⇒  X;•p ) ]
+		⇐	{ G is strengthening }
+		  [ A;true  ⇒  ( •p  ⇒  X;•p ) ]
+		=	{ Shunting and state restriction }
+		  [ p;A;true  ⇒  X;p;true ]
+		⇐	{ Monotonicity }
+		  [ p;A  ⇒  X;p ]
+
+u is persistent
+
+		  [ •p ∧ u  ⇒  G •p ]
+		⇐	{ Induction using the weakest 
+			  fixed point definition of G }
+		  [ •p ∧ u  ⇒  (X;(•p ∧ u) ∨ 1) ∧ •p ]
+		⇐	{ Predicate calculus }
+		  [ •p ∧ u  ⇒  X;(•p ∧ u) ]
+		=	{ Persistence rule }
+		  [ •p ∧ u  ⇒  X;•p ]
+		=	{ "u = G A;true"  ;  state restriction }
+		  [ p ; G A;true  ⇒  X;•p ]
+		⇐	{ G is strengthening }
+		  [ p ; A ; true  ⇒  X ; p ; true ]
+		⇐	{ Monotonicity }
+		  [ p;A  ⇒  X;p ]
+
+		  [ •p ∧ u  ⇒  G •p ]
+		⇐	{ Induction using the weakest 
+			  fixed point definition of G }
+		  [ •p ∧ u  ⇒  (X;(•p ∧ u) ∨ 1) ∧ •p ]
+		⇐	{ Predicate calculus }
+		  [ •p ∧ u  ⇒  X;(•p ∧ u) ]
+		=	{ Persistence rule }
+		  [ •p ∧ u  ⇒  X;•p ]
+		=	{ shunting }
+		  [ u  ⇒  (•p  ⇒  X;•p) ]
+
+#########
+  unless
+#########
+
+Prove that [ u  ⇒  G (•p  ⇒  (G •p) ; S ; •q) ]  ⇐  [ (p ∧ ~q);A  ⇒  X;(p ∨ q) ]
+
+First proof
+==========
+
+With Son
+
+with 
+	u = G A;true
+	S = X ∨ 1
+	[ A ⇒ X ]
+
+
+(0)		[ (G •p) ; S ; •q   ≡   •p  ∧  (〈νx::  X;p;x  ∨ X;•q〉∨  •q ) ]
+
+	   [ u  ⇒  G (•p  ⇒  (G •p) ; S ; •q) ]
+	⇐	{ u is persistent and monotonicity }
+	   [ u  ⇒  (•p  ⇒  (G •p) ; S ; •q) ]
+	=	{ (0) and predicate calculus }
+	   [ u ∧ •(p ∧ ~q)  ⇒〈νx::  X;p;x  ∨ X;•q〉]
+	⇐	{ Fix point induction }
+	   [ u ∧ •(p ∧ ~q)  ⇒  X;(u ∧ •p ∧ ¬•q) ∨ X;•q]
+	=	{ u is persistent }
+	   [ u ∧ •(p ∧ ~q)  ⇒  X ; (•p ∧ ¬•q) ∨ X;•q]
+	=	{ state restriction; ';' over ∨ }
+	   [ (p ∧ ~q) ; u  ⇒  X ; •(p ∨ q)]
+	=	{ "u = G A;true" }
+	   [ (p ∧ ~q) ; (G A;true)  ⇒  X ; (p ∨ q) ; true ]
+	⇐	{ G is strengthening }
+	   [ (p ∧ ~q) ; A ; true  ⇒  X ; (p ∨ q) ; true ]
+	⇐	{ Monotonicity }
+	   [ (p ∧ ~q) ; A  ⇒  X ; (p ∨ q) ]
+
+proof of (0)
+
+	[ (G •p) ; S ; •q   ≡   •p  ∧  (〈νx::  X;p;x ∨ X;•q〉∨  •q ) ]
+
+A simple approach to proving an implication with a G on the left-hand side is to use fix point induction together with the fix point definition of G.  It is, however impossible if the fix point is part of a more complex expression.  It is therefore necessary to remove the suffix of G in order to make it amenable to fix point induction.  We are now trying to "distribute" the suffix over the fix point expression.  The tail recursion theorem is our best tool to do so.  Additionally, 
+
+(1)		[ *(p;X) ; p ; S ; •q   ≡   p ; *(X;p) ; X ; •q  ∨  p ; •q ]
+
+(C3)		[   (G •p) ; s
+		  =
+		   ∞(p;X)  ∨  *(p;X) ; p ; s ]
+
+	   (G •p) ; S ; •q
+	=	{ (C2) }
+	   ∞(p;X)  ∨  *(p;X) ; p ; S ; •q
+	=	{ (1) }
+	   ∞(p;X)  ∨  p ; *(X;p) ; X ; •q  ∨  p ; •q
+	=	{ Rolling }
+	   p ; ∞(X;p)  ∨  p ; *(X;p) ; X ; •q  ∨  p ; •q
+	=	{ State restriction }
+	   •p ∧ ( ∞(X;p)  ∨  *(X;p) ; X ; •q  ∨  •q )
+	=	{ Tail recursion (32) }
+	   •p  ∧  (〈νx ::  X ; p ; x  ∨  X ; •q〉∨  •q)
+
+	   ∞(p;X)  ∨  *(p;X) ; p ; S ; •q
+	=	{ tail recursion }
+	 〈ν x :: p ; X ; x  ∨  p ; S ; •q〉 
+
+	   [ u ∧ •p   ⇒ 〈ν x :: p ; X ; x  ∨  p ; S ; •q〉]
+	⇐	{ Induction }
+	   [ u ∧ •p   ⇒   p ; X ; (u ∧ •p)  ∨  p ; S ; •q ]
+	=	{ State restriction; [ S ≡ X ∨ 1 ] }
+	   [ u ∧ •p   ⇒   •p  ∧  (X ; (u ∧ •p)  ∨  •q  ∨  X;•q) ]
+	=	{ Predicate calculus }
+	   [ u ∧ •p ∧ ~•q   ⇒   X ; (u ∧ •p)  ∨  X;•q ]
+	=	{ persistence rule with u }
+	   [ u ∧ •p ∧ ~•q   ⇒   X ; •(p ∨ q) ]
+
+
+
+proof of (1)
+
+	[ *(p;X) ; p ; S ; •q   ≡   p ; *(X;p) ; X ; •q  ∨  p ; •q ]
+
+	   *(p;X) ; p ; S ; •q
+	=	{ definition of S }
+	   *(p;X) ; p ; X ; •q  ∨  *(p;X) ; p ; •q
+	=	{ Rolling }
+	   p ; *(X;p) ; X ; •q  ∨  p ; *(X;p) ; •q
+	=	{ Unfolding }
+	   p ; *(X;p) ; X ; •q  ∨  p ; *(X;p) ; X ; •(p ∧ q)  ∨  p ; •q
+	=	{ ';' over ∨ ; absorption }
+	   p ; *(X;p) ; X ; •q  ∨  p ; •q
+
+Second proof
+=============
+
+We want to prove 
+
+	[ (p un q)   ≡   (p ∧ ~q  co  p ∨ q) ]
+
+We proceed by mutual implication.
+
+(C4)		[ (G •p) ; s    ≡  〈ν x :: p ; X ; x  ∨  p ; s〉]
+(2)		[ (p co q)   ≡   G (•p  ⇒  X;•q) ]
+
+Ping (⇐):
+
+This direction is proven by indirect inequality.  We use the fact that both co and un operators yield persistent computations to assume persistence with our dummy too.  The proof is done in two phases.  
+
+The first phase is concerned with stripping away the G operators.  We need to remove them because (0) there are two many of them (1) the inner one is inside a ';' expression and no such expression occurs in the computation formulate of co.
+
+	   [ u  ⇒   G (•p  ⇒  (G •p) ; S ; •q) ]
+	=	{ (C8) }
+	   [ u  ⇒  (•p  ⇒  (G •p) ; S ; •q) ]
+	=	{ (C4) and predicate calculus }
+	   [ u ∧ •p   ⇒ 〈ν x :: p ; X ; x  ∨  p ; S ; •q〉]
+	⇐	{ Induction }
+	   [ u ∧ •p   ⇒   p ; X ; (u ∧ •p)  ∨  p ; S ; •q ]
+	=	{ Persistence rule (C9) }
+	   [ u ∧ •p   ⇒   p ; X ; •p  ∨  p ; S ; •q  ]
+	=	{ Shunting }
+	   [ u   ⇒   (•p   ⇒   p ; X ; •p  ∨  p ; S ; •q) ]
+	⇐	{ (3) see below }
+	   [ u   ⇒   (p ∧ ~q  co  p ∨ q) ]
+
+At the last step, we appealed to a lemma because its proof does not depend on the general structure of the manipulated formula.  Indeed, it allows us to calculate without "u ⇒" and without [ ∙ ]. 
+
+(3)	[ (•p   ⇒   p ; X ; •p  ∨  p ; S ; •q)     ⇐     p ∧ ~q  co  p ∨ q ]
+
+
+	   •p   ⇒   p ; X ; •p  ∨  p ; S ; •q
+	=	{ [ S  ≡  X ∨ 1 ] }
+	   •p   ⇒   p ; X ; •p  ∨  p ; X ; •q  ∨  p ; •q
+	=	{ ; over ∨ then state restriction }
+	   •p   ⇒   •p  ∧  (X ; (•p ∨ •q)  ∨  •q)  ]
+	=	{ Predicate calculus }
+	   •p ∧ •~q   ⇒   X ; (•p ∨ •q)
+	⇐	{ G is strengthening }
+	   G (•p ∧ •~q   ⇒   X ; (•p ∨ •q))
+	=	{ (2) }
+	   p ∧ ~q  co  p ∨ q
+
+Pong (⇒):
+
+with 
+(4)		[ u  ≡  G (•p  ⇒  (G •p) ; S ; •q) ]
+
+(C3)		[ (G •p) ; s   ≡   ∞(p;X)  ∨  *(p;X) ; p ; s ]
+(C8)		[ u  ⇒  G s ]  ≡  [ u  ⇒  s ]
+	with u persistent
+
+		   [ u  ⇒  (p ∧ ~q  co  p ∨ q) ]
+		=	{ (2) }
+		   [ u  ⇒  G (•p ∧ ¬•q  ⇒   X ; (•p ∨ •q)) ]
+		=	{ (C8) }
+		   [ u  ⇒  ( •p ∧ ¬•q  ⇒   X ; (•p ∨ •q) ) ]
+		⇐	{ (4) then G is strengthening; shunting }
+		   [ (•p  ⇒  (G •p) ; S ; •q)  ⇒  ( •p  ⇒  (•q ∨  X ; (•p ∨ •q)) ) ]
+		⇐	{ Monotonicity }
+		   [ (G •p) ; S ; •q  ⇒  (•q ∨ X ; (•p ∨ •q)) ]
+
+		   (G •p) ; S ; •q
+		=	{ (C3) }
+		   ∞(p;X)  ∨  *(p;X) ; p ; S ; •q
+		=	{ Unfolding and unrolling }
+		   p ; X ; p ; ∞(X;p)  ∨  p ; X ; p ; *(X;p) ; S ; •q  ∨  S ; •q
+		⇒	{ Monotonicity; [ S  ≡  X ∨ 1 ] }
+		   X ; p ; true  ∨  X ; •q  ∨  •q
+		=	{ ; over ∨ }
+		   X ; (•p ∨ •q)  ∨  •q
+
+
+################
+  Random notes
+################
+
+
+		   [ u  ⇒  G (•p ⇒ (G •p);•q) ]
+		=	{ Induction }
+		   [ u  ⇒  (X;u  ∨  1)  ∧  (•p ⇒ (G •p);•q) ]
+		⇐	{ Strengthening }
+		   [ u  ⇒  X;u  ∧  (•p ⇒ (G •p);•q) ]
+		=	{ Persistence and u is active }
+		   [ u  ⇒  (•p ⇒ (G •p);•q) ]
+		=	{ Shunting }
+		   [ u ∧ •p  ⇒  (G •p);•q ]
+		=	{ (0) and induction }
+		   [ u ∧ •p  ⇒  (X;(u ∧ •p) ∨ 1) ∧ •p  ∧  true;q ]
+		=	{ ∧ over ∨ and remove p }
+		   [ u ∧ •p  ⇒  (X;(u ∧ •p)  ∧  true;q) ∨ (1  ∧  true;q) ]
+		⇐	{ Shunting, state restriction, persistence rule }
+		   [ u ∧ •(p ∧ ~q)  ⇒  (X;•p  ∧  true;q) ]
+
+[ u ⇒ E ]
+because
+u = ∞A  and A  ⇒   X
+
+				¬q
+			=	¬q;1
+			⇒	¬q;true
+			=	¬•q
+			
+			¬q ∨ X;true
+			then shunt et voila!
+		⇐	{ Persistence and predicate calculus }
+		   [ u ∧ •p  ⇒  X;•p  ∧  true;q ]
+
+		   [ u  ⇒  X;u ]
+		=	{ Persistence rule }
+		   [ u  ⇒  X;true ]
+		=	{ u is active }
+		   true
+
+====
+Using fixpoint rolling
+
+(0)
+
+		 〈ν x:: (X;x ∨ 1) ∧ •p〉;  q  ;  true
+		⇐	{ Strengthening with [ 1 ⇒ true ] and [ q ⇒ 1 ]}
+		 〈ν x:: (X;x;q ∨ 1) ∧ •p〉;  q
+		⇐	{ Rolling }
+		 〈ν x:: ((X;x ∨ 1) ∧ •p) ; q〉
+		=	{ State restriction }
+		 〈ν x:: (X;x ∨ 1) ∧ •p  ∧  true;q〉
+   
+====
+		   f.x  =  x;•q
+		   g.x  =   (X;x ∨ 1) ∧ •p
+
+		f.νg = νh  ⇐  f⚬g = h⚬f
+			for upper adjoint f
+
+			   ((X;x ∨ 1) ∧ •p);•q
+			=	{ ∧ and ; over ∨ }
+			   (X;x ∧ •p);•q  ∨  (•p ∧ 1);•q
+			=	{ State restriction three times }
+			   p;X;x;•q  ∨  p;•q
+
+		h.x  = p;X;x  ∨ p;•q
+		
+		   p;X;x  ∨ p;•q
+		=	{ ; over ∨ }
+		   p;(X;x  ∨ •q)
+
+Try dualizing G and fusion
+=======================
+
+		   ¬¬((X;x ∨ 1) ∧ •p)
+		=	{ ¬ over ∧ and ∨ }
+		   ¬(((¬(X;x) ∧ X;true) ∨ •~p)
+		=	{ (41.iii) }
+		   ¬(((X;¬x ∨ 1) ∧ X;true) ∨ •~p)
+		=	{ ∧ over ∨ and (i) }
+		   ¬((X;¬x ∧ X;true) ∨ •~p)
+		=	{ Atomic split }
+		   ¬((X;¬x) ∨ •~p)
+		=	{ g }
+		    ¬g.(¬x)
+
+		 〈ν x:: ¬g.(¬x)〉
+		=	{ Dualisation }
+		   ¬〈μ x:: g.x〉
+
+g.x = X;x ∨ •~p
+
+********************************************************************
+
+===========
+With Son:
+
+		   •p  ⇒  (G •p) ; S ; •q
+		=	{ Fix point formulation }
+		   •p  ⇒〈νx::  (X;x ∨ 1) ∧ •p〉;  S  ;  •q			
+		=	{ Transform consequent }
+
+			 〈νx::  (X;x ∨ 1) ∧ •p〉;  S  ;  •q			
+			=	{ state restriction }
+			 〈νx::  p ; X ; x  ∨  p〉;  S  ;  •q			
+			=	{ (32) }
+			   *(p;X) ; p ; S ; •q  ∨  ∞(p;X) ; S ; •q 
+			=	{ Side calculations }
+
+				   ∞(p;X) ; S ; •q 
+				=	{ p;X ⇒ ¬1 and (29) }
+				   (∞(p;X) ∧ E) ; S ; •q 
+				=	{ (10.i) }
+				   ∞(p;X) ; false ; S ; •q 
+				=	{ left zero of ; }
+				   ∞(p;X) ; false
+				=	{ Undoing }
+				   ∞(p;X)
+
+				   *(p;X) ; p ; S ; •q
+				=	{ definition of S }
+				   *(p;X) ; p ; X ; •q  ∨  *(p;X) ; p ; •q
+				=	{ Rolling }
+				   p ; *(X;p) ; X ; •q  ∨  p ; *(X;p) ; •q
+				=	{ Unfolding }
+				   p ; *(X;p) ; X ; •q  ∨  p ; *(X;p) ; X ; •(p ∧ q)  ∨  p ; •q
+				=	{ ';' over ∨ ; absorption }
+				   p ; *(X;p) ; X ; •q  ∨  p ; •q
+
+			   p ; *(X;p) ; X ; •(q ∨ (p ∧ q))  ∨  p ; •q  ∨  ∞(p;X)
+			=	{ Complement ; rolling }
+			   p ; *(X;p) ; X ; •q  ∨  p ; •q  ∨  p;∞(X;p)
+			=	{ State restriction }
+			   •p ∧ ( *(X;p) ; X ; •q  ∨  •q  ∨  ∞(X;p) )
+
+		   •p  ⇒  •p ∧ ( *(X;p) ; X ; •q  ∨  •q  ∨  ∞(X;p) )
+		=	{ Predicate calculus }
+		   •p ∧ ¬•q   ⇒   *(X;p) ; X ; •q  ∨  ∞(X;p)
+		=	{ Tail recursion (32) }
+		   •p ∧ ¬•q   ⇒ 〈νx ::  X ; p ; x  ∨  X ; •q〉
+
+	   [ u ∧ •(p ∧ ~q)  ⇒〈νx::  X;p;x  ∨ X;•q〉]
+	⇐	{ Induction }
+	   [ u ∧ •(p ∧ ~q)  ⇒  X;p;(u ∧ •p ∧ ¬•q)  ∨ X;•q]
+	=	{ u is persistent ; ';' over ∨ ; state restriction }
+	   [ u ∧ •(p ∧ ~q)  ⇒  X;•(p ∨ q)]
+	=	{ "u = G st;true" ; state restriction }
+	   [ (p ∧ ~q) ; G st;true  ⇒  X ; (p ∨ q) ; true ]
+	⇐	{ G is strengthening }
+	   [ (p ∧ ~q) ; st ; true  ⇒  X ; (p ∨ q) ; true ]
+	⇐	{ Monotonicity }
+	   [ (p ∧ ~q) ; st  ⇒  X ; (p ∨ q) ]
+
+
+
+===========
+
+
+
+		   [ G A;true  ⇒  G (•p ⇒ (G •p);•q) ]
+		⇐	{ Monotonicity }
+		   [ A;true  ⇒  (•p  ⇒  (G •p);•q) ]
+		=	{ Shunting and state restriction }
+		   [ p;A;true  ⇒  (G •p);•q ]
+		=	{ Excluded middle and (40.i) }
+		   [ p;A;true  ⇒  ((1 ∨ X;true) ∧ G •p);•q ]
+		=	{ 
+
+
+		   [ z ⇒ G •p ]
+		⇐	{ Induction }
+		   [ z  ⇒  (X;z ∨ 1) ∧ •p ]
+
+		   [ G ( •(p∧~q)  ⇒  X;•(p∨q) )  ⇒  G ( •p  ⇒  (G •p);•q ) ]
+		⇐	{ Induction and strengthening }
+		   [ G ( •(p∧~q)  ⇒  X;•(p∨q) )  ⇒  (X;(G ( •(p∧~q)  ⇒  X;•(p∨q) ))) ∧ (•p  ⇒  (G •p);•q) ]
+		=	{ Persistence rule }
+		   [ G ( •(p∧~q)  ⇒  X;•(p∨q) )  ⇒  X;true ∧ (•p  ⇒  (G •p);•q) ]
+
+		   [ G A;true  ⇒  G ( •p  ⇒  (G •p);•q ) ]
+		⇐	{ Induction }
+		   [ G A;true  ⇒  X;( G A;true ) ∧ (•p  ⇒  (G •p);•q) ]
+		=	{ Persistence rule }
+		   [ G A;true  ⇒  X;true ∧ (•p  ⇒  (G •p);•q) ]
+		⇐	{ Predicate calculus then atomicity }
+		   [ G A;true  ⇒  (•p ∨ 1  ⇒  X;true ∧ (G •p);•q) ]
+
+		  [ p;A  ⇒  X;(p ∨ q) ]
+		  [ (p ∧ ~q);A  ⇒  X;p ]

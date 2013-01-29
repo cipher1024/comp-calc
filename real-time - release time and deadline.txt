@@ -1,0 +1,63 @@
+
+* guard:			g
+* release time:	r
+* action:			a
+* deadline:		〈↓i:: d.i〉
+
+g ↦ h
+h un ¬g
+[ g ⇐ h ]
+[ d ≤ now - △g   ⇐   d+k ≤ now-△g ]
+
+clock
+* Deadline:		d.i
+* goal:			p.i
+
+{ g ∧ ¬p0 ∧ now - △g ≤ r }
+   a   
+{ p0 }
+
+f ∈ a → b
+with b = ⌀, there is no such f
+		 〈∀x: x∈a: f.x ∈ b〉
+
+(0)		x ∈ a ∧ f.x = y   ≡   x(f)y
+
+(1)		〈∀x,y,z:  x(f)y ∧ x(f)z:  y = z〉
+	"left functional"
+(2)		〈∀x: x∈a:〈∃y: y∈b: x(f)y〉〉
+	"total"
+(3)		〈∀x: x∈a: f.x ∈ b〉
+	"type"
+(4)		〈∀x,y: x(f)y: x∈a ∧ y∈b〉
+
+
+(0)  ≡  (1) ∧ (2)
+
+(⇒)
+
+		   x(f)y ∧ x(f)z
+		=	{ (0) and y := z }
+		   x ∈ a ∧ f.x = y ∧ f.x = z
+		⇒	{ Leibniz }
+		   y = z
+
+		 〈∀x: x∈a:〈∃y: y∈b: x(f)y〉〉
+		=	{ assume antecedent }
+		 〈∀x: x∈a:〈∃y: y∈b: x∈a ⇒ x(f)y〉〉
+		⇐	{ (0) }
+		 〈∀x: x∈a:〈∃y: y∈b: f.x = y〉〉
+		=	{ one point rule }
+		 〈∀x: x∈a: f.x ∈ b〉
+
+
+(⇐)
+
+		 〈∀x: x∈a:〈∃y: y∈b: x(f)y〉〉
+		⇒	{ (1) }
+		 〈∀x,z: x∈a ∧ z∈b:〈∃y: y∈b: x(f)z ⇒ z = y〉〉
+		⇒	{ ⇒ over ∃ }
+		 〈∀x,z: x∈a ∧ z∈b: x(f)z  ⇒〈∃y: y∈b: z = y〉〉
+		=	{ one point rule }
+		 〈∀x,z: x∈a ∧ z∈b: x(f)z  ⇒  z∈b〉
+

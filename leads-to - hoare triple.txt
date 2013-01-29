@@ -1,0 +1,35 @@
+================================
+Leads-to Properties as Hoare Triples
+================================
+
+
+TRY 0
+
+	f.( { p } S0 { q } S1 { r } )   =   A [] B
+
+	A   =   f.( { p } S0 { q } )
+	B   =   f.( { q } S1 { r } )
+
+	p is stable in B
+	q is stable in A
+
+TRY 1
+
+	{ p } x := E { q }
+	{ p } S0 { q } S1 { r }
+	{ p } if g0 → S0 [] g1 → S1 fi { q }
+	{ p } do g0 → S0 od { q }
+
+ 	x := E  if  p
+	p un q
+
+	f.( { p } S0 { q } )   []   f.( { q } S1 { r } )
+	prop.( { p } S0 { q } )
+	prop.( { q } S1 { r } )
+
+	f.( { p ∧ g0 } S0 { q } )   []   f.( { p ∧ g1 } S1 { q } )
+	prop.( { p ∧ g0 } S0 { q } )
+	prop.( { p ∧ g1 } S1 { q } )
+
+	f.( { p ∧ g0 } S0 { p } )
+	prop.( { p ∧ g0 } S0 { p } )

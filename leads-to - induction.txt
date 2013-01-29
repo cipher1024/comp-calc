@@ -1,0 +1,48 @@
+We want a rule to prove
+
+	p ↦ q
+
+by induction.
+
+In order to write a proof by induction, we need a domain to induce over.  If we have a variant expression, inducing over it's initial value seems like a good start.  We are therefore going to rewrite our goal as a universal quantification that we'll be able to prove by induction.
+
+		   p  ↦  q
+		=	{ One point rule, with M an 
+			   expression of the state }
+		 〈∃ m::  p  ∧  M = m〉↦   q
+		=	{ Disjunction }
+		 〈∀ m::  p  ∧  M = m  ↦  q〉
+		=	{ (0) }
+		 〈∀ m::  A.m〉
+
+(0)		[  A.m   ≡   (p ∧ M = m  ↦  q)  ]
+
+Assuming m ranges over a well founded set, we can prove the last universal quantification by induction.  Our proof obligation hence becomes:
+
+	[〈∀ m:: A.m  ⇐〈∀ n: n < m:  A.n〉〉]
+
+		 〈∀ n: n < m:  A.n〉
+		=	{ (0) }
+		 〈∀ n: n < m:  p ∧ M = n  ↦  q〉
+		=	{ Disjunction }
+		 〈∃ n:  n < m:  p ∧ M = n〉↦  q
+		⇒	{ Cancellation with (1) }
+		   p  ∧  M = m   ↦   q
+		=	{ (0) }
+		   A.m
+
+(1)		p  ∧  M = m   ↦ 〈∃ n:  n < m:  p ∧ M = n〉∨  q
+
+		 〈∃ n: n < m:  p ∧ n = M〉
+		=	{ Trading }
+		 〈∃ n: n = M:  p ∧ n < m〉
+		=	{ One point rule }
+		   (p ∧ M < m) 
+
+(2)		[ (p  ∧ M = m  ↦  (p ∧ M < m) ∨ q)   
+		≡   (p  ∧  M = m  ↦〈∃ n: n < m:  p ∧ n = M〉∨  q) ]
+
+Hence, our rule is:
+
+	[  (p ↦ q)   ⇐   (p ∧ M = m   ↦   (p ∧ M < m) ∨ q)  ]
+

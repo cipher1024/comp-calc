@@ -1,0 +1,126 @@
+note: change unrolling for rolling: the analogy is with a wheel rather than a roll
+
+x = k  ∧  [ q ⇒ p ]  un〈∃ i:: x = f.i.x〉
+
+##################
+  Merging Actions
+##################
+
+sc.(g → A if b) ∧ sc.(h → B if c)
+	G ( G •g  ⇒  G (F ; A ; true) )
+	G ( G •h  ⇒  G (F ; B ; true) )
+
+follow from
+
+sc.(g ∨ h  →  A if g [] B if h)
+(0)	G ( G •(g ∨ h)  ⇒  G (F ; (g;A ∨ h;B) ; true ) )
+
+Assuming G •g
+	g  ⇒  ¬h
+	h  ⇒  ¬g
+
+	   F ; A ; true
+	=	{ G •g }
+	   F ; g ; A ; true
+	=	{ identity of ∨ }
+	   F ; (g;A ∨ false)  ; true
+	=	{ left zero of ; }
+	   F ; (g;A ∨ false;B)  ; true
+	=	{ Persistence; g ⇒ ¬h }
+	   F ; (g;A ∨ h;B)  ; true
+
+P:	G (F ; (g;A ∨ h;B) ; true)
+
+	   (G •g  ⇒  P) ∧ (G •h  ⇒  P)
+	=	{ ⇒ over ∨ }
+	   G •g  ∨  G •h   ⇒   P
+	⇐	{ Monotonicity }
+	   G (•g ∨ •h)  ⇒  P
+
+QED
+
+##################
+  Splitting Actions
+##################
+
+Lemma 1
+
+	   G (•g ∨ •h)  ⇒  G F;•g  ∨  G F;•h
+	=	{ Implication } 
+	   G (•g ∨ •h)  ⇒  (¬G F;•g  ⇒  G F;•h)
+	=	{ ¬ over G then over F }
+	   G (•g ∨ •h)  ⇒  (F ; (G •~g)  ⇒  G F;•h)
+
+assume
+(0)		G (•g ∨ •h)
+
+	   F ; (G •~g)
+	=	{ (0) }
+	   F ; (G •(~g ∧ (g ∨ h)))
+	=	{ complement }
+	   F ; (G •(~g ∧ h))
+	⇒	{ weakening }
+	   F ; (G •h)
+	⇒	{ (1) }
+	   G F;•h
+
+(1)	[ F ; (G •h)  ⇒  G F;•h ]
+
+Proof
+
+	   F ; (G •h)  ⇒  G F;•h
+	=	{ predicate calculus }
+	   F ; (G •h)  ⇒  (¬G F;•h  ⇒  false)
+	=	{ ¬ over G and over F ; _ }
+	   F ; (G •h)  ⇒  (F ; (G ¬•h)  ⇒  false)
+	=	{ "F ; false = false" twice }
+	   F ; (G •h)  ⇒  (F ; (G ¬•h)  ⇒  F ; F ; false)
+	⇐	{ monotonicity }
+
+mistake!
+	in computation calculus, monotonicity of function f is:
+		[ x ⇒ y]  ⇒  [ f.x  ⇒  f.y ]
+
+what about [ G (x ⇒ y)   ⇒   G (f.x ⇒ f.y) ]
+
+	   F ; (G •h)  ⇒  (G ¬•h  ⇒  F ; false)
+	=	{ shunting }
+	   G ¬•h  ⇒  (F ; (G •h)  ⇒  F ; false)
+	⇐	{ monotonicity }
+
+mistake!
+
+	   G ¬•h  ⇒  (G •h  ⇒  false)
+	⇐	{ shunting then G is strengthening }
+	   ¬•h ∧ •h  ⇒  false
+	=	{ contradiction }
+	   true
+
+
+QED
+
+---------
+  Theorem
+---------
+
+		sc.(a ∧ (b ∨ c) → A)
+				G ( G •(a ∧ (b ∨ c))  ⇒  G F;A;true )
+
+follows from
+
+(2)		sc.(a {b} → A)
+			G ( G •a ∧ G F;•b  ⇒  G F;b;A;true )
+(3)		sc.(a {c} → A)
+			G ( G •a ∧ G F;•c  ⇒  G F;c;A;true )
+
+		   G (•a ∧ •(b ∨ c) )
+		=	{ G over ∧ }
+		   G •a  ∧  G •(b ∨ c)
+		⇒	{ lemma 1 }
+		   G •a  ∧  (G F;•b  ∨  G F;•c)
+		=	{ ∧ over ∨ }
+		   (G •a  ∧  G F;•b)  ∨  (G •a  ∧  G F;•c)
+		⇒	{ (2) ∧ (3) }
+		   G F;b;A;true  ∧  G F;c;A;true
+		⇒	{ b and c are state predicates }
+		   G F;A;true

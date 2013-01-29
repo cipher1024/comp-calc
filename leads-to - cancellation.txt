@@ -1,0 +1,29 @@
+
+Todo: explain why for a demonstrandum G p and hypothesis G q, it is sufficient to prove q ⇒ p:  monotonicity.
+
+(0)		p  ↦  q ∨ r
+(1)		r ↦ b
+
+we have
+
+(2)		p   ↦   q ∨ b
+
+We use a different formulation for each, using:
+
+(3)		[ (p ↦ q)   ≡   G (•p  ⇒  F;•q) ]
+
+(0')		G ( •p  ⇒  F;•(q∨r) )
+(1')		G (•r  ⇒  F;•b)
+(2')		G ( •p  ⇒  F;•(q∨b) )
+
+		   •p
+		⇒	{ (0') }
+		   F ; •(q ∨ r)
+		=	{ ; over ∨ }
+		   F ; •q  ∨  F ; •r
+		⇒	{ (1') }
+		   F ; •q  ∨  F ; F ; •b
+		=	{ [ F ≡ F;F ] }
+		   F ; •q  ∨  F ; •b
+		=	{ ; over ∨ }
+		   F ; •(q ∨ b)

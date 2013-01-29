@@ -1,0 +1,33 @@
+
+(0)		[ p un p ]
+(1)		[ p un ~p ]
+
+(2)		[ p un q   ≡   G (•p  ⇒  (G •p) ; S ; •q) ]
+
+proof of (0)
+
+		   (G •p) ; S ; •p
+		⇐	{ (C0), [ 1 ⇒ S ] }
+		   p ; •p
+		=	{ State restriction }
+		   •p ∧ •p
+		=	{ Idempotence }
+		   •p
+
+		   p un p
+		=	{ un to co }
+		   p ∧ ¬p  co  p ∨ p
+		=	{ contradiction }
+		   false  co  p ∨ p
+		=	{ false co p }
+		   true
+
+proof of (1)
+
+		   p un ¬p
+		=	{ un to co }
+		   p ∧ p  co  p ∨ ¬q
+		=	{ excluded middle }
+		   p ∧ p  co  true
+		=	{ p co true }
+		   E ∨ F ; ~p

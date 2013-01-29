@@ -1,0 +1,13 @@
+	[ ( G A;true  ⇒  (p co q) )  ⇐  ( p;A ⇒ X;q ) ]
+
+(0)	[ (p co q)  ≡  G (•p  ⇒  X;•q) ]
+
+	   [ G A;true  ⇒  (p co q) ]
+	=	{ co (0) }
+	   [ G A;true  ⇒  G (•p  ⇒  X;•q) ]
+	⇐	{ Monotonicity of G }
+	   [ A;true  ⇒  (•p  ⇒  X;•q) ]
+	=	{ Shunting; state restriction }
+	   [ p;A;true  ⇒   X;q;true ]
+	⇐	{ Monotonicity }
+	   [ p;A  ⇒  X;q ]

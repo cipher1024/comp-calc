@@ -1,0 +1,24 @@
+Code generation:
+
+Creating processes:
+-----------------
+
+Given a partition of concrete variables between private and shared (which, as opposed to local and global / external / interface which relates to modularity, give the visibility to processes), partition them between processes according to whether two private variables are accessed by one action.
+
+Given a partition of concrete actions between private and shared, partition them according to the variables they use.  The initial partition can be made by choosing which actions we can afford to have synchronized.
+
+Creating the control flow of one process:
+----------------------------------
+
+Minimize the amount of guard evaluation and expression evalution.
+
+Make sure that any loop either:
+	o terminates or
+	o for each action of the process:
+		o it passes through an edge labeled by the action or
+		o it steps through a vertex labeled by the negation of it's schedule.
+
+Task:
+-----
+
+Evaluate the generated code for performance, maximum asynchrony and find a way to compare 

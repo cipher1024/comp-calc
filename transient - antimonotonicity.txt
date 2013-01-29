@@ -1,0 +1,9 @@
+
+	[ (tr p ∧ q)   ⇐   tr p ]
+
+	
+		   F ; •~(p ∧ q)
+		=	{ ~ over ∧ }
+		   F ; •(~p ∨ ~q)
+		⇐	{ strengthening }
+		   F ; •~p

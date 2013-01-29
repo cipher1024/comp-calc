@@ -1,0 +1,76 @@
+Coarse schedule addition
+======================
+
+f.( G (G •g  ⇒  G F;A;true) )  =   G (G •(c∧g)  ⇒  G F;A;true) )  
+
+f.x ⊑ f.y   ⇐   x ⊑ y
+
+x  =   G (G •g  ⇒  G F;A;true)
+y   =   G (G •h  ⇒  G F;B;true) ∧ M
+	M is persistent
+
+		   G (G •(c∧g)  ⇒  G F;A;true)
+		=	{ G over ∧ then shunting }
+		   G (G •c  ⇒  (G •g  ⇒  G F;A;true))
+		⇐	{ G is strengthening }
+		   G (G •c  ⇒  G (G •g  ⇒  G F;A;true))
+		⇐	{ x ⊑ y }
+		   G (G •c  ⇒  G (G •h  ⇒  G F;B;true) ∧ M)
+		⇐	{ predicate calculus }
+		   G (( G •c  ⇒  G (G •h  ⇒  G F;B;true) ) ∧ M)
+		=	{ G is idempotent, M is persistent }
+		   G (G G •c  ⇒  G (G •h  ⇒  G F;B;true))  ∧  M
+		⇐	{ (C16) with f.x = G x }
+		   G (G •c  ⇒  (G •h  ⇒  G F;B;true))  ∧  M
+		=	{ shunting then G over ∧ }
+		   G (G •(c∧h)  ⇒  G F;B;true))  ∧  M
+
+Second try:
+	The inner structure of the scheduling constraints matters little beside the fact they contain G and an implications
+
+x  =  G (a  ⇒  b)
+y   =  G (c  ⇒  d) ∧ M
+p is persistent
+
+		   G (p ∧ a  ⇒  b)
+		=	{ shunting }
+		   G (p  ⇒  (a  ⇒  b))
+		⇐	{ G is strengthening }
+		   G (p  ⇒  G (a  ⇒  b))
+		⇐	{ x ⊑ y }
+		   G (p  ⇒  G (c  ⇒  d) ∧ M)
+		⇐	{ predicate calculus }
+		   G ( (p  ⇒  G (c  ⇒  d))  ∧  M )
+		=	{ p and M are persistent }
+		   G (G p  ⇒  G (c  ⇒  d))  ∧  M
+		⇐	{ (C16) with f.x = G x }
+		   G (p  ⇒  (c  ⇒  d))  ∧  M
+		=	{ shunting }
+		   G (p ∧ c  ⇒  d))  ∧  M
+
+x  =〈∧ i::  G (a.i ⇒ b.i)〉
+y  =〈∧ i::  G (c.i ⇒ d.i)〉∧  M
+p is persistent
+
+		 〈∧ i::  G (p ∧ a.i  ⇒  b.i)〉
+		=	{ shunting }
+		 〈∧ i::  G ( p  ⇒  (a.i  ⇒  b.i) )〉
+		⇐	{ G is strengthening }
+		 〈∧ i::  G ( p  ⇒  G (a.i  ⇒  b.i) )〉
+		=	{ G and ⇒ over ∧ }
+		   G ( p  ⇒〈∧ i::  G (a.i  ⇒  b.i)〉)
+		⇐	{ x ⊑ y }
+		   G ( p   ⇒ 〈∧ i::  G (c.i  ⇒  d.i)〉∧  M )
+		⇐	{ predicate calculus }
+		   G ( (  p   ⇒ 〈∧ i::  G (c.i  ⇒  d.i)〉)  ∧  M )
+		=	{ ⇒ and G over ∧; p and M are persistent }
+		 〈∧ i::  G ( G p  ⇒  G (c.i  ⇒  d.i) )〉∧  M
+		⇐	{ (C16) with f.x = G x }
+		 〈∧ i::  G ( p  ⇒  (c.i  ⇒  d.i) )〉∧  M
+		=	{ shunting }
+		 〈∧ i::  G ( p ∧ c.i  ⇒  d.i )〉∧  M
+
+
+****
+
+

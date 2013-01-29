@@ -1,0 +1,103 @@
+false co p
+
+		   false co p
+		=	{ co }
+		   G (•false  ⇒  X ; •p)
+		=	{ definition of • }
+		   G (false;true  ⇒  X ; •p)
+		=	{ left zero of ; }
+		   G (false  ⇒  X ; •p)
+		=	{ Predicate calculus }
+		   G true
+		=	{ G is universally conjunctional }
+		   true
+
+p co true
+
+		   p co true
+		=	{ co }
+		   G (•p  ⇒  X ; •1)
+		=	{ definition of • }
+		   G (•p  ⇒  X ; true)
+		=	{ fix point formulation }
+		 〈ν x :: (X ; x  ∨  1) ∧ (•p  ⇒  X ; true)〉
+		=	{ Implication }
+		 〈ν x :: (X ; x  ∨  1) ∧ (•~p  ∨  X ; true)〉
+		=	{ ∧ over ∨ ; state restriction and [ 1 ≢ X ; true ] }
+		 〈ν x :: ~p ; X ; x  ∨  (X ; x ∧ X ; true)  ∨  ~p〉
+		=	{ Monotonicity of ; twice }
+		 〈ν x ::  X ; x  ∨  ~p〉
+		=	{ Tail recursion }
+		   ∞X  ∨  *X ; ~p
+		=	{ (41.ii) }
+		   E  ∨  F ; ~p
+
+This rule is a bit more tricky.  Provided that we work with infinite traces, p co true is indeed a theorem but such an assumption would clutter our model so we will be very careful when using this rule: we will only use it in combination with a program that runs infinitely (i.e. all the programs of this thesis) and never as a temporal property.
+
+(conjunction, disjunction)
+	[ (p ∧ p' co q ∧ q')   ⇐   (p co q) ∧ (p' co q') ]
+	[ (p ∨ p' co q ∨ q')   ⇐   (p co q) ∧ (p' co q') ]
+
+		   •p ∧ •p'
+		⇒	{ Assumptions }
+		   X ; •q  ∧  X ; •q'
+		=	{ X ; _ is positively conjunctive }
+		   X ; (•q ∧ •q')
+
+		   •p ∨ •p'
+		⇒	{ Assumptions }
+		   X ; •q  ∨  X ; •q'
+		=	{ ; over ∨ }
+		   X ; (•q ∨ •q')
+
+(lhs antimonotonicity)
+	[ ( (p co q)  ⇒  (r co q) )  ⇐  G •(r ⇒ p) ]
+
+		   •r
+		⇒	{ r ⇒ p }
+		   •p
+		⇒	{ p co q }
+		   X ; •q
+
+(rhs monotonicty)
+	[ ( (p co q)  ⇒  (p co r) )  ⇐  G •(q ⇒ r) ]
+
+		   •p
+		⇒	{ p co q }
+		   X ; •q
+		⇒	{ q ⇒ r }
+		   X ; •r
+
+(we drop transivity, it depends on our choice of semantics for the program and is not independant enough)
+
+(co and finitely stable)
+
+	[ G (•p ⇒ (X;•p ∨ 1))  ≡  G (•p ⇒ G •p) ]
+
+Ping pong proof: 
+
+ping (⇒)
+
+		   [ u  ⇒  G (•p ⇒ G •p) ]
+		⇐	{ u is persistent and monotonicity }
+		   [ u  ⇒  (•p ⇒ G •p) ]
+		=	{ shunting }
+		   [ u ∧ •p  ⇒  G •p ]
+		⇐	{ fixpoint induction }
+		   [ u ∧ •p  ⇒  ( X;(u ∧ •p) ∨ 1 ) ∧ •p ]
+		=	{ substitution, predicate calculus }
+		   [ u  ⇒  ( •p  ⇒  ( X;•p ∨ 1 ) ) ]
+		⇐	{ G is strengthening }
+		   [ u  ⇒  G ( •p  ⇒  ( X;•p ∨ 1 ) ) ]
+
+pong (⇐)
+G _ and ⇒ _ are monotonic so we can focus on the parts that differ.  We focus our attention on [ X;•p ∨ 1  ⇐  G •p ] and starts by shunting 1 to the antecedent and transform the resulting antecedent into the consequent.
+
+		   G •p ∧ ¬1
+		=	{ (40i) }
+		   G •p ∧ X;true
+		⇒	{ persistence }
+		   X ; (G •p)
+		⇒	{ G is strengthening }
+		   X ; •p
+

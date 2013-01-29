@@ -1,0 +1,29 @@
+completion
+
+given
+(0)	〈∀ i::  p.i  ↦  q.i ∨ b〉
+
+(1)	〈∀ i:: q.i un b〉
+
+
+then
+〈s∀ i:: p.i〉↦〈s∀ i:: q.i〉∨ b
+
+		   •(s∀ i:: p.i)
+		=	{ • over s∀ }
+		 〈∀ i:: •p.i〉
+		⇒	{ (0) }
+		 〈∀ i:: F ; •q.i  ∨  F ; •b〉
+		⇒	{ (1) }
+		 〈∀ i:: F;(G •q.i);S;•b  ∨  F ; •b〉
+		=	{ (10.iv) }
+		 〈∀ i:: F;(G •q.i  ∧  E)  ∨  F;(G •q.i  ∧  F);S;•b  ∨  F ; •b〉
+		⇒	{ weakening and monotonicity with F = F;F }
+		 〈∀ i:: F;(G •q.i)  ∨  F ; •b〉
+		=	{ ∨ over ∀ }
+		 〈∀ i:: F;(G •q.i)〉∨  F ; •b
+		⇒	{ (C12) and G is strengthening }
+		   F ;〈∀ i:: •q.i〉∨  F ; •b
+		=	{ ; over ∨ }
+		   F ; •( (s∀ i:: q.i) ∨ b )
+		   

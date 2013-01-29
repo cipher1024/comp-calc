@@ -1,0 +1,45 @@
+Given 
+(0)		p un q
+(1)		p' un q'
+
+we have
+
+(2)		p ∧ p' un q ∨ q'  
+	simple conjunction
+
+(3)		p ∨ p' un q ∨ q'  
+	simple disjunction
+
+proof of (2)
+
+		   p ∧ p'  un  q ∨ q'  
+		=	{ un to co }
+		   p ∧ ¬q ∧ p' ∧ ¬q'  co  (p ∧ p') ∨ q ∨ q'
+		=	{ ∨ over ∧ }
+		   p ∧ ¬q ∧ p' ∧ ¬q'  co  (p ∨ q ∨ q') ∧ (p' ∨ q ∨ q')
+		⇐	{ rhs monotonicity }
+		   p ∧ ¬q ∧ p' ∧ ¬q'  co  (p ∨ q) ∧ (p' ∨ q')
+		⇐	{ conjunction }
+		   (p ∧ ¬q  co  p ∨ q)  ∧  (p' ∧ ¬q'  co  p' ∨ q')
+		=	{ co to un }
+		   (p un q)  ∧  (p' un q')
+
+second proof
+
+		   (p un q)  ∧  (p' un q')
+		⇒	{ conjunction }
+		   p ∧ p'  un  (p ∧ q') ∨ (p' ∧ q) ∨ (q ∧ q')
+		⇒	{ rhs monotonicity }
+		   p ∧ p'  un  q' ∨ q ∨ (q ∧ q')
+		=	{ absorption twice }
+		   p ∧ p'  un  q' ∨ q
+
+proof of (3)
+
+		   (p un q)  ∧  (p' un q')
+		⇒	{ disjunction }
+		   p ∨ p'  un  (¬p ∧ q') ∨ (¬p' ∧ q) ∨ (q ∧ q')
+		⇒	{ monotonicity of rhs }
+		   p ∨ p'  un  q' ∨ q ∨ (q ∧ q')
+		=	{ absorption twice }
+		   p ∨ p'  un  q' ∨ q

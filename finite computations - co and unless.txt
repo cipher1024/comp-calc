@@ -1,0 +1,100 @@
+Finite formulations
+
+	p un q  ≡  G (•p  ⇒  (G •p) ; (S;•q ∨ 1))
+	p co q  ≡  G (•p  ⇒  X;•q ∨ 1)
+
+	[ (p ∧ ~q co p ∨ q)  ≡  (p un q) ]
+
+ping (⇒)
+
+		   [ u  ⇒  G (•p  ⇒  (G •p) ; (S;•q ∨ 1)) ]
+		=	{ (C8) }
+		   [ u  ⇒  (•p  ⇒  (G •p) ; (S;•q ∨ 1)) ]
+		=	{ (C4) and predicate calculus }
+		   [ u ∧ •p  ⇒〈ν x :: p ; X ; x ∨ p ; (S;•q ∨ 1)〉]
+		⇐	{ induction }
+		   [ u ∧ •p   ⇒   p ; X ; (u ∧ •p)  ∨  p ; (S;•q ∨ 1) ]
+		=	{ persistence }
+		   [ u ∧ •p   ⇒   p ; X ; •p  ∨  p ; (S;•q ∨ 1) ]
+		=	{ shunting }
+		   [ u   ⇒   (•p   ⇒   p ; X ; •p  ∨  p ; (S;•q ∨ 1)) ]
+		⇐	{ (3) }
+		   [ u  ⇒  (p ∧ ~q  co  p ∨ q) ]
+
+(3)	[ (•p   ⇒   p ; X ; •p  ∨  p ; (S;•q ∨ 1))     ⇐     (p ∧ ~q  co  p ∨ q) ]
+
+	   •p   ⇒   p ; X ; •p  ∨  p ; (S;•q ∨ 1)
+	=	{ [ S  ≡  X ∨ 1 ] }
+	   •p   ⇒   p ; X ; •p  ∨  p ; X ; •q  ∨  p ; •q  ∨  p ; 1
+	=	{ ; over ∨ then state restriction }
+	   •p   ⇒   •p  ∧  (X ; (•p ∨ •q)  ∨  •q  ∨  1)  ]
+	=	{ Predicate calculus }
+	   •p ∧ •~q   ⇒   X ; (•p ∨ •q) ∨ 1
+	⇐	{ G is strengthening }
+	   G (•p ∧ •~q   ⇒   X ; (•p ∨ •q) ∨ 1)
+	=	{ (2) }
+	   p ∧ ~q  co  p ∨ q
+
+pong (⇐)
+
+	we prove the implication by using the monotonicity of
+	G (•p ⇒ _)
+	 [ (G •p) ; (S;•q ∨ 1)  ⇒  (•q ∨  X ; (•p ∨ •q) ∨ 1) ]
+
+		   [ G (•p ⇒ X)  ⇒  G (•p ∧ •~q ⇒ Y) ]
+		=	{ shunting }
+		   [ G (•p ⇒ X)  ⇒  G (•p ⇒ •q ∨ Y) ]
+		⇐	{ monotonicity }
+		   [ X  ⇒  •q ∨ Y ]
+
+		   (G •p) ; (S;•q ∨ 1)
+		=	{ (C3) }
+		   ∞(p;X)  ∨  *(p;X) ; p ; (S;•q ∨ 1)
+		=	{ Unfolding and unrolling }
+		   p ; X ; p ; ∞(X;p)  ∨  p ; X ; p ; *(X;p) ; (S;•q ∨ 1)  ∨  S ; •q  ∨  1
+		⇒	{ Monotonicity; [ S  ≡  X ∨ 1 ] }
+		   X ; p ; true  ∨  X ; •q  ∨  •q  ∨  1
+		=	{ ; over ∨ }
+		   X ; (•p ∨ •q)  ∨  •q  ∨  1
+
+
+	tr p in P  ⇒  [ (true ↦ ~p)  ⇐  ex.P ]
+	p tr q in P  ⇒  [ (true  ↦  ~p ∨ q)  ⇐  ex.P ]
+
+	g → A
+
+	(A)		(tr p in (g → A))   ≡   [ p ⇒ g ] ∧ [ (p ∧ g);A ⇒ X;p ]
+	(D)		(p tr q  in  (g → A))   ≡   [ p ∧ ~q ⇒ g ] ∧ [ (p ∧ ~q ∧ g);A ⇒ X;q ]
+	(B)		(p tr q  in  P)   ⇒   (tr  p ∧ ~q  in  P)
+	(C)		(tr  p  in  F [] G)   ≡   (tr p  in  F) ∨ (tr p  in  G)
+
+		   p tr q  in  (g → A)
+		=	{ (D) }
+		   [ p ∧ ~q ⇒ g ] ∧ [ (p ∧ ~q ∧ g);A ⇒ X;q ]
+		⇒	{ weakening }
+		   [ p ∧ ~q ⇒ g ] ∧ [ (p ∧ ~q ∧ g);A ⇒ X;(~p ∨ q) ]
+		=	{ ~ over ∧ }
+		   [ p ∧ ~q ⇒ g ] ∧ [ (p ∧ ~q ∧ g);A ⇒ X;~(p ∧ ~q) ]
+		=	{ (A) }
+		   tr p ∧ ~q  in  (g → A)
+
+
+	(0)		[ p ∧ ~q  ⇒  g ]
+	(1)		[ (p ∧ ~q ∧ g) ; A  ⇒  X ; q ]
+
+	(2)		G (G •g ⇒ F;g;A;true)
+
+		G ( true  ⇒  F ; •~p )
+
+		   G •p
+		=	{ (0) }
+		   G •p ∧ G •g
+		=	{ (2) }
+		   G •p ∧ G •g ∧ F;A;true
+		⇒	{ persistence }
+		   F ; (p ∧ g) ; A ; true
+		⇒	{ (1) }
+		   F ; X ; ~p ; true
+		⇒	{ unfolding }
+		   F ; •~p
+

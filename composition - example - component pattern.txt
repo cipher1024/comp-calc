@@ -1,0 +1,76 @@
+Component pattern
+=================
+
+
+root
+	-- root of component
+par
+	-- parent
+cpnt
+	-- parts
+rch		(auxiliary)
+	-- reachability
+
+always
+	J4:		[ rch  ≡  +par ]
+
+invariants
+	J3:		root ∈ cpnt
+
+	J1:		par ∈ cpnt ↔ cpnt
+			[ par  ⇒  cpnt ; true ; cpnt ]
+
+	J0:		〈∀x: x ∈ cpnt: root(rch)x〉
+			[ root ; true ; cpnt  ⇒  rch ]
+				-- each component is reachable
+
+	J2:		〈∀x,y:  x(+par)y ∧ y(rch)x: x = y〉
+			[ rch ∧ ~rch  ⇒  J ]
+				-- antisymmetric
+
+	J5:		[ rch ∧ J  ⇒  false ]		
+				-- acyclic
+
+	J6:		〈∀x,y,z:: ¬x(rch)z ∨ ¬y(rch)z ∨ x(rch)y ∨ y(rch)x〉
+				-- disjoint
+			[ rch ; ~rch  ⇒  rch ∨ ~rch ]
+
+theorem
+	J7:		[ rch ; par  ⇒  rch ]
+	J1 ∧ J0:  〈∀x:: x ∈ cpnt  ≡  root(rch)x〉
+
+	add_new_child
+		any c where
+			{c} ∩ cpnt = ⌀
+		do
+		S0:	cpnt' = cpnt ∪ {c}
+		end
+
+invariance of J0 under add_new_child
+
+			   x ∈ cpnt'
+			=	{ S0 }
+			   x ∈ cpnt  ∨  x = c
+			⇒	{ J0 }
+			   root'(rch)x ∨ x = c
+
+			   root'(rch')c
+			⇐	{ J7 }
+			   root'(rch' ; par')c
+			⇐	{ witness }
+			   root's(rch')p ∧ p(par')c
+			=	{ S1: par' = par ∪ p ↔ c }
+			   root(rch')p
+			=	{ J4 }
+			   root(+par')p
+			=	{ S1 }
+			   root(+(par ∪ p ↔ c))p
+			=	{ + _ is monotonic }
+			   root(rch)p
+			=	{ J0 ∧ J1 }
+			   p ∈ cpnt
+
+	P0:		p ∈ cpnt
+		with p a parameter
+
+	S1:		par' = par ∪ p ↔ c

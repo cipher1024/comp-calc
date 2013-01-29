@@ -1,0 +1,34 @@
+Definition
+	[ st p  ≡  G (•p => G •p) ]
+
+Theorem
+	[ E => (st p ≡ p un false) ]
+	
+		 p un false
+		=	{ def }
+		 G (•p => (G •p);false)
+		=	{ (10.i) }
+		 G (•p => G •p ∧ E)
+		=	{ distributivity }
+		 G (•p => G •p) ∧ G (•p => E)
+		=	{ def }
+		 (st p) ∧ G (•p => E)
+
+So far, we haven't made use of the antecendant in the demonstrandum and the last step would be a nice time to make use of it.
+
+		 (st p) ∧ G (•p => E)
+		=	{ [ E => G (•p => E) ] }
+		 (st p)
+
+We are now left with the obligation to prove the validity of the last step.
+		 
+		 G (•p => E) ∧ E
+		=	{ E is persistent }
+		 G (•p => E) ∧ G E
+		=	{ implication, G over ∧ }
+		 G ( (¬•p ∨ E) ∧ E )
+		=	{ absorption }
+		 G E
+		=	{ E is persistent }
+		 E
+		

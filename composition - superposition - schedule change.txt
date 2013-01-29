@@ -1,0 +1,89 @@
+Schedule replacement in superposition:
+
+The application of superpositions on a program is supposed to have an effect independent of the order in which we apply them.  For that reason, the addition of actions and assignments in function of new variables are judged safe but it is not so clear that we can make any change to the program, especially with respect to its schedules.
+
+Here we show that a schedule can be changed independently in two different superposition, the difficulty being that the superposition don't build on one another but only on a common underlying program. We therefore have to prove that their combined effect is consistent with their individual effect.
+
+
+we want to refine
+
+	g → A
+		G (G •g  ⇒  G F;A;true)
+into
+
+	h0 ∧ h1 → A
+		G (G •(h0 ∧ h1)  ⇒  G F;A;true)
+
+
+by proving properties that don't mention h0 and h1 together.  In the case of two independent superposition 
+
+what about
+
+h0:
+(0)		g ↦ h0
+			G (•g ⇒ F;•h0)			
+(1)		h0 un ¬g
+			G (•h0 ⇒ (G •h0) ; S ; •~g)			
+
+h1:
+(2)		g ↦ h1
+			G (•g ⇒ F;•h1)
+(3)		h1 un ¬g
+			G (•h1 ⇒ (G •h1) ; S ; •~g)
+
+proof
+
+		   G (G •g  ⇒  F;A;true)
+		⇐	{ (4) see below }
+		   G (F;G •(h0 ∧ h1)  ⇒  F;A;true)
+		=	{ F;_ is idempotent, heading for monotonicity of F;_ }
+		   G (F;G •(h0 ∧ h1)  ⇒  F;F;A;true)
+		⇐	{ F;_ is monotonic }
+		   G (G •(h0 ∧ h1)  ⇒  F;A;true)
+
+lemma 0
+(4)		 G (G •g  ⇒  F ; G •(h0 ∧ h1))
+
+proof
+		   G •g
+		=	{ (5a) see below }
+		   G •g  ∧  F; (G •h0)
+		⇒	{ persistence rule }
+		   F ; ( (G •h0) ∧ G •g )
+		⇒	{ (5b) see below }
+		   F ; ( (G •h0) ∧ F;(G •h1) )
+		⇒	{ persistence rule }
+		   F ; F ; (G •h0 ∧ G •h1)
+		⇒	{ F;_ is idempotent and G is conjunctional }
+		   F ; G •(h0∧h1)
+
+(end of lemma 0)
+
+lemma 1
+(5a)		G (G •g  ⇒  F;(G •h0))
+(5b)		G (G •g  ⇒  F;(G •h1))
+
+The proof of (5b) can be obtained from the proof of (5a) by substituting h0, (0), (1) := h1, (2), (3).
+It is therefore only necessary to show the proof of (5a).
+
+		   G •g
+		=	{ G is strengthening }
+		   G •g ∧ •g
+		⇒	{ (0) }
+		   G •g ∧ F;•h0
+		⇒	{ (1) }
+		   G •g  ∧  F;(G •h0);S;•~g
+		⇒	{ persistence rule }
+		   F;(G •h0);S;false
+		⇒	{ S is finite then [ false ⇒ 1 ] }
+		   F; (G •h0)
+
+(end of lemma 1)
+
+(end of proof)
+
+Note:
+
+(1) and (3) might be nicer if we weakened them so that A does not have to satisfy the safety property (as shown in the round robin scheduler in chapter 4, section 4.1.5 of my master's thesis)
+
+(end of note)
