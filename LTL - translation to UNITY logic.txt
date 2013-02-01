@@ -1,0 +1,27 @@
+I thought you might be interested in knowing that I now have translation rules from LTL to UNITY so that, given an LTL property, part of the design of the system is choosing some elements of the corresponding UNITY properties. The big difference between UNITY and LTL is that UNITY properties are persistent but the LTL ones aren't. So what I do is that I associate a pair with each LTL property to make the UNITY properties based on the initial state.
+
+The first element of the pair is a predicate that must hold initially and the second part is a set of (persistent) UNITY properties. As an example, consider <>p. This means that p is only required to hold once. It can hold more often or not. true |-> p will be stronger but might also be too strong. Instead, we choose an initial predicate q and form the pair (q, q |-> p) which means, initially q must hold and whenever it holds, p follows. It can be falsified early on or not. Either way works. Instead of q, we can choose a boolean variable b and decide its role in the design. Here are all the rules with p, q, r state predicates and X, Y LTL formulas, iX and iY their initial predicates and uX and uY their corresponding set of UNITY properties.
+
+LTL			relative UNITY (as opposed to persistent)
+p			(p, {})
+[] X			( iX, { invariant iX } U uX )
+<> X		choose p in ( p, { p |-> iX } U uX )
+X W Y		choose p in ( p, { invariant p => iX , p /\ not iY un iY } U uX U uY )
+	-- W implies no overlap
+X R Y		choose p in ( p, { invariant p => iY, p  un  iX /\ p } U uX U uY )
+	-- R has its arguments backward compared to W and implies an overlap
+X U Y		choose p in ( p, { invariant p => iX, p |-> iY, p /\ not iY un iY } U uX U uY )
+X \/ Y		( iX \/ iY, uX U uY )
+X /\ Y		( iX /\ iY, uX U uY )
+not ( [] X )	see <> not X
+not ( <> X )	see [] not X
+not (X U Y)	see (not X) R (not Y)
+not (X R Y)	see (not X) U (not Y)
+not (X W Y)	not (X U Y \/ []X)
+			not (X U Y) /\  not [] X
+			( (not X) R (not Y) ) /\ <> not X
+			(not Y) U (not X /\ not Y)
+X => Y		see not X \/ Y
+X == Y		see (X => Y) /\ (Y => X)
+
+In the case of []<>p, for the "eventually" part, we can choose the predicate to be true, which makes the invariant of "henceforth" trivial to prove. We land on true |-> p as our set of UNITY properties
