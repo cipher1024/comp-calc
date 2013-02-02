@@ -240,17 +240,17 @@ We use (C10) and (51) from RM Dijkstra's Computation Calculus to prove
 		〈μz:: x;z ∨ 1〉;  y
 		=	{ fusion with f.z = z ; y and g.z = x;z ∨ 1 }
 
-			  f.(g.z)
-			=	{ defs }
-			   (x;z ∨ 1) ; y
-			=	{ ; over ∨ }
-			   x;z;y ∨ y
-			=	{ def of f }
-			   x ; (f.z) ∨ y
-			=	{ h.z = x;z ∨ y }
-			   h.(f.z)
+			•	  f.(g.z)
+				=	{ defs }
+				   (x;z ∨ 1) ; y
+				=	{ ; over ∨ }
+				   x;z;y ∨ y
+				=	{ def of f }
+				   x ; (f.z) ∨ y
+				=	{ h.z = x;z ∨ y }
+				   h.(f.z)
 
-		〈μz:: x;z ∨ y〉
+		•〈μz:: x;z ∨ y〉
 
 	second part by fixpoint fusion
 
@@ -642,7 +642,7 @@ pose q = G •p
 proof:
 		   ¬•
 
-
+	*	*	*
 
 
 

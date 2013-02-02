@@ -1,27 +1,165 @@
 I thought you might be interested in knowing that I now have translation rules from LTL to UNITY so that, given an LTL property, part of the design of the system is choosing some elements of the corresponding UNITY properties. The big difference between UNITY and LTL is that UNITY properties are persistent but the LTL ones aren't. So what I do is that I associate a pair with each LTL property to make the UNITY properties based on the initial state.
 
-The first element of the pair is a predicate that must hold initially and the second part is a set of (persistent) UNITY properties. As an example, consider <>p. This means that p is only required to hold once. It can hold more often or not. true |-> p will be stronger but might also be too strong. Instead, we choose an initial predicate q and form the pair (q, q |-> p) which means, initially q must hold and whenever it holds, p follows. It can be falsified early on or not. Either way works. Instead of q, we can choose a boolean variable b and decide its role in the design. Here are all the rules with p, q, r state predicates and X, Y LTL formulas, iX and iY their initial predicates and uX and uY their corresponding set of UNITY properties.
+The first element of the pair is a predicate that must hold initially and the second part is a set of (persistent) UNITY properties. As an example, consider <>p. This means that p is only required to hold once. It can hold more often or not. true ↦ p will be stronger but might also be too strong. Instead, we choose an initial predicate q and form the pair (q, q ↦ p) which means, initially q must hold and whenever it holds, p follows. It can be falsified early on or not. Either way works. Instead of q, we can choose a boolean variable b and decide its role in the design. Here are all the rules with p, q, r state predicates and X, Y LTL formulas, iX and iY their initial predicates and uX and uY their corresponding set of UNITY properties.
 
-LTL			relative UNITY (as opposed to persistent)
-p			(p, {})
-[] X			( iX, { invariant iX } U uX )
-<> X		choose p in ( p, { p |-> iX } U uX )
-X W Y		choose p in ( p, { invariant p => iX , p /\ not iY un iY } U uX U uY )
-	-- W implies no overlap
-X R Y		choose p in ( p, { invariant p => iY, p  un  iX /\ p } U uX U uY )
-	-- R has its arguments backward compared to W and implies an overlap
-X U Y		choose p in ( p, { invariant p => iX, p |-> iY, p /\ not iY un iY } U uX U uY )
-X \/ Y		( iX \/ iY, uX U uY )
-X /\ Y		( iX /\ iY, uX U uY )
-not ( [] X )	see <> not X
-not ( <> X )	see [] not X
-not (X U Y)	see (not X) R (not Y)
-not (X R Y)	see (not X) U (not Y)
-not (X W Y)	not (X U Y \/ []X)
-			not (X U Y) /\  not [] X
-			( (not X) R (not Y) ) /\ <> not X
-			(not Y) U (not X /\ not Y)
-X => Y		see not X \/ Y
-X == Y		see (X => Y) /\ (Y => X)
+	LTL			relative UNITY (as opposed to persistent UNITY)
+	p			(p, {})
+	[] X			( iX, { invariant iX } ∪ uX )
+	<> X		choose p in ( p, { p ↦ iX } ∪ uX )
+	X W Y		choose p in ( p, { invariant p ⇒ iX , p ∧ ¬ iY un iY } ∪ uX ∪ uY )
+		-- W implies no overlap
+	X R Y		choose p in ( p, { invariant p ⇒ iY, p  un  iX ∧ p } ∪ uX ∪ uY )
+		-- R has its arguments backward compared to W and implies an overlap
+	X U Y		choose p in ( p, { invariant p ⇒ iX, p ↦ iY, p ∧ ¬ iY un iY } ∪ uX ∪ uY )
+	X ∨ Y		( iX ∨ iY, uX ∪ uY )
+	X ∧ Y		( iX ∧ iY, uX ∪ uY )
+	¬ ( [] X )		see <> ¬ X
+	¬ ( <> X )	see [] ¬ X
+	¬ (X U Y)	see (¬ X) R (¬ Y)
+	¬ (X R Y)	see (¬ X) U (¬ Y)
+	¬ (X W Y)	¬ (X U Y ∨ []X)
+				¬ (X U Y) ∧  ¬ [] X
+				( (¬ X) R (¬ Y) ) ∧ <> ¬ X
+				(¬ Y) U (¬ X ∧ ¬ Y)
+	X ⇒ Y		see ¬ X ∨ Y
+	X ≡ Y		see (X ⇒ Y) ∧ (Y ⇒ X)
 
-In the case of []<>p, for the "eventually" part, we can choose the predicate to be true, which makes the invariant of "henceforth" trivial to prove. We land on true |-> p as our set of UNITY properties
+In the case of []<>q, for the "eventually" part, we can choose the predicate p as true, which makes the invariant of "henceforth" trivial to prove. We land on { true ↦ q } as our set of UNITY properties
+
+Proofs
+	p  =  •p
+	<>s  =  F ; s
+	[] s  =  G s
+	s U t  =  (μx :: (X;x ∧ s) ∨ t)
+		-- if we had chosen the term (X;x ∨ t) ∧ s, we would force an 
+		-- overlap between the last state where s holds and the first 
+		-- where t holds
+	s W t  =  (νx :: (X;x ∧ s) ∨ (s ∧ 1) ∨ t)
+		-- the ∨ (s ∧ 1) is an addition after trying to prove (1)
+		-- it covers the case of finite computations better
+	s R t  =  (νx :: (X;x ∨ s ∨ 1) ∧ t)
+		-- the ∨ 1 is an addition after trying to prove (0). 
+		-- it covers the case of finite computations better
+
+Healthiness checks
+=================
+
+(0)	¬(s U t) = (¬s) R (¬t)
+
+		   ¬(s U t)
+		=	{ unfold U }
+		   ¬(μx :: (X;x ∧ s) ∨ t)
+		=	{ dual }
+		   (νx :: ¬( (X;¬x ∧ s) ∨ t ))
+		=	{ ¬ over ∨ and  ∧ }
+		   (νx :: (¬X;¬x ∨ ¬s) ∧ ¬t)
+		=	{ RMD (41iii) }
+		   (νx :: (X;x ∨ ¬s ∨ 1) ∧ ¬t)
+
+If we use the above formulation as a new definition of R, it means that any finite computation can terminate without t happening. Let's see what other choice we have.
+
+		   ¬(νx :: (X;x ∨ s) ∧ t)
+		=	{ dual }
+		   (μx :: ¬( (X;¬x ∨ s) ∧ t ))
+		=	{ distribute ¬ }
+		   (μx :: (¬X;¬x ∧ ¬s) ∨ ¬t)
+		=	{ RMD (41iii) }
+		   (μx :: ( (X;x ∨ 1) ∧ ¬s ) ∨ ¬t)
+		=	{ ∧ over ∨ }
+		   (μx :: ( (X;x ∧ ¬s) ∨ (1 ∧ ¬s) ) ∨ ¬t)
+
+If we use the last step as a definition for U, it means that a computation can terminate before t becoming true. This would mean that [ s U t  ⇒  F;t ] does not hold which is not attractive at all. We will therefore use (νx :: (X;x ∨ ¬s ∨ 1) ∧ ¬t) as a definition of R instead.
+
+(1)	s W t  =  s U t ∨ G s
+
+We use fixpoint fusion (ref. (C15)) on
+
+	(νx :: (X;x ∧ s) ∨ t)  =  sUt ∨ (νx :: (X;x ∨ 1) ∧ s)
+
+with
+
+	f.x  =  sUt  ∨  x
+		(universally conjunctive)
+	g.x  =  (X;x ∨ 1) ∧ s
+
+According to our intuition of W, h should be as follows:
+
+	h.x  =  (X;x ∧ s) ∨ t
+
+We are left to prove
+
+	f.(g.x) = h.(f.x)
+
+Looking at the second part of the proof of (C15), we see that we will need something like (C18) to unfold sUt. Our initial guess is that the following will do. Let's try it.
+
+	(2)	sUt  =  (s ∧ X ; (sUt)) ∨ t
+
+		   f.(g.x)
+		=	{ definitions }
+		   sUt  ∨  ( (X;x ∨ 1) ∧ s )
+		=	{ (2) }
+		   t ∨ ( X;(sUt) ∧ s ) ∨ ( (X;x ∨ 1) ∧ s )
+		=	{ ∧ over ∨ }
+		   t ∨ (( X;(sUt) ∨ X;x ∨ 1 ) ∧ s)
+		=	{ ; over ∨ }
+		   t ∨ (( X;( (sUt) ∨ x ) ∨ 1 ) ∧ s)
+		=	{ definition of f }
+		   t ∨ (( X;( f.x ) ∨ 1 ) ∧ s)
+		=	{ ∧ over ∨ }
+		   t ∨ (X;( f.x ) ∧ s) ∨ (1 ∧ s)
+		=	{ redefine h.x as (X;x ∧ s) ∨ (1 ∧ s) ∨ t }
+		   h.( f.x )
+
+	h.x  =  (X;x ∧ s) ∨ (1 ∧ s) ∨ t
+
+(2)	p un q  =  G (•p  ⇒  •p W •q)
+
+	we can prove the above by proving •p  ∧  •p W •q  =  (G •p) ; (X ∨ 1) ; •q
+
+A first candidate for this proof is to use fixpoint fusion again. However, both fixpoints are present as subexpressions of their side of the equality.  Let's fix this by using (C4) on the right hand side of the equality to rewrite it  as:
+
+	(νx :: (X;x ∨ (X ∨ 1);•q) ∧ •p)
+
+The fixpoint expression on the left hand side is:
+
+	(ν
+
+Then, we can consider the functions inside the fixpoints (according to the fixpoint fusion pattern of RMD CC paper):
+
+	f.x  =  •p ∧ x
+	g.x  =  (X;x ∧ •p) ∨ •q
+	h.x  =  p;X;x  ∨  p;(X ∨ 1);•q
+
+	(νx :: (X;x ∨ (X ∨ 1);•q) ∧ •p)
+=		{ ; over ∨ }
+	(νx :: (X;x ∨ X;•q ∨ •q) ∧ •p)
+=		{ ; over ∨ }
+	(νx :: (X;(x∨•q) ∨ •q) ∧ •p)
+	(νx :: (X;x ∧ •p) ∨ •q)
+
+	f.x = X;x
+	g.x = x ∧ •p
+	h.x = x ∨ •q
+	k.x = x ∨ (•q ∧ •p)
+(0)	g ⚬ h  =  k ⚬ g
+(1)	h ⚬ h  =  h
+(2)	g ⚬ g  =  g
+(3)	h ⚬ k  =  h
+
+	   ν( h ⚬ g ⚬ f )		
+	=	{ rolling }
+	   h.( ν(g ⚬ f ⚬ h) )
+	=	{ (3) }
+	   (h⚬k).( ν(g ⚬ f ⚬ h ⚬ k) )
+	=	{ rolling }
+	   h.( ν(k ⚬ g ⚬ f ⚬ h) )
+	=	{ (0) }
+	   h.( ν(g ⚬ h ⚬ f ⚬ h) )
+
+	t.x = x ∧ (•p ∨ •q)
+(4)	h ⚬ g  =  t ⚬ h
+(5)	g ⚬ t = t ⚬ g = g
+
+	   g.( ν(h ⚬ g ⚬ f) )
+	=	{ rolling }
+	   (g ⚬ h ⚬ g).( ν(f ⚬ h ⚬ g) )
