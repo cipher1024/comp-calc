@@ -118,48 +118,78 @@ Looking at the second part of the proof of (C15), we see that we will need somet
 
 A first candidate for this proof is to use fixpoint fusion again. However, both fixpoints are present as subexpressions of their side of the equality.  Let's fix this by using (C4) on the right hand side of the equality to rewrite it  as:
 
-	(νx :: (X;x ∨ (X ∨ 1);•q) ∧ •p)
+	(νx :: (X;(x ∨ •q) ∨ •q) ∧ •p)
 
 The fixpoint expression on the left hand side is:
 
-	(ν
-
-Then, we can consider the functions inside the fixpoints (according to the fixpoint fusion pattern of RMD CC paper):
-
-	f.x  =  •p ∧ x
-	g.x  =  (X;x ∧ •p) ∨ •q
-	h.x  =  p;X;x  ∨  p;(X ∨ 1);•q
-
-	(νx :: (X;x ∨ (X ∨ 1);•q) ∧ •p)
-=		{ ; over ∨ }
-	(νx :: (X;x ∨ X;•q ∨ •q) ∧ •p)
-=		{ ; over ∨ }
-	(νx :: (X;(x∨•q) ∨ •q) ∧ •p)
 	(νx :: (X;x ∧ •p) ∨ •q)
+
+Then, we can consider the functions inside the fixpoints 
 
 	f.x = X;x
 	g.x = x ∧ •p
 	h.x = x ∨ •q
-	k.x = x ∨ (•q ∧ •p)
-(0)	g ⚬ h  =  k ⚬ g
-(1)	h ⚬ h  =  h
-(2)	g ⚬ g  =  g
-(3)	h ⚬ k  =  h
+
+and the two expressions are now
+
+	P0:	ν( g ⚬ h ⚬ f ⚬ h )
+and
+	P1:	ν( h ⚬ g ⚬ f )
+
+In order to calculate properly with them, here are a series of properties on how they interact pairwise.
+
+	(0)	g ⚬ h  =  k ⚬ g
+		with 
+			k.x = x ∨ (•q ∧ •p)
+	(1)	h ⚬ h  =  h
+	(2)	g ⚬ g  =  g
+	(3)	h ⚬ k  =  h
+
+Let's try to make P0 appear by calculating with P1.
 
 	   ν( h ⚬ g ⚬ f )		
-	=	{ rolling }
-	   h.( ν(g ⚬ f ⚬ h) )
 	=	{ (3) }
-	   (h⚬k).( ν(g ⚬ f ⚬ h ⚬ k) )
+	   ν( h ⚬ k ⚬ g ⚬ f )
 	=	{ rolling }
 	   h.( ν(k ⚬ g ⚬ f ⚬ h) )
 	=	{ (0) }
 	   h.( ν(g ⚬ h ⚬ f ⚬ h) )
 
-	t.x = x ∧ (•p ∨ •q)
-(4)	h ⚬ g  =  t ⚬ h
-(5)	g ⚬ t = t ⚬ g = g
+Which gives us the equality 
 
-	   g.( ν(h ⚬ g ⚬ f) )
-	=	{ rolling }
-	   (g ⚬ h ⚬ g).( ν(f ⚬ h ⚬ g) )
+		(νx :: (X;x ∧ •p) ∨ •q)  =  (νx :: (X;(x ∨ •q) ∨ •q) ∧ •p))  ∨  •q
+
+Pretty interesting. What happens if we start calculating directly with P1 however? For the sake of increasing our freedom when manipulating h and g next to one another, let's see what we get when we rewrite h ⚬ g.
+
+	(4)	h ⚬ g  =  t ⚬ h
+		with
+			t.x = x ∧ (•p ∨ •q)
+	(5)	g ⚬ t = t ⚬ g = g
+
+		   ν(g ⚬ h ⚬ f ⚬ h)
+		=	{ rolling }
+		   (g ⚬ h).( ν(f ⚬ h ⚬ g ⚬ h) )
+		=	{ (4) }
+		   (g ⚬ h).( ν(f ⚬ t ⚬ h ⚬ h) )
+		=	{ (1) }
+		   (g ⚬ h).( ν(f ⚬ t ⚬ h) )
+		=	{ (4) }
+		   (g ⚬ h).( ν(f ⚬ h ⚬ g) )
+		=	{ rolling }
+		   ν( h ⚬ g ⚬ f )
+
+This gives us the surprising result that
+
+	(νx :: (X;(x ∨ •q) ∨ •q) ∧ •p)  =  (νx :: (X;x ∧ •p) ∨ •q)
+
+It is surprising because the left hand side implies •p but the right hand side does not seem to.  As a matter of fact, •q implies the right hand side and most definitely does not imply •p in general.
+
+Proof of [ •q ⇒ (νx :: (X;x ∧ •p) ∨ •q) ]
+
+		   [ •q  ⇒  (νx :: (X;x ∧ •p) ∨ •q) ]
+		⇐	{ induction }
+		   [ •q  ⇒  (X;•q ∧ •p) ∨ •q ]
+		=	{ weakening }
+		   true
+
+It would seem that there is something wrong with one of the proofs above. How annoying ...
