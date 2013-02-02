@@ -175,14 +175,27 @@ Pretty interesting. What happens if we start calculating directly with P1 howeve
 		   (g ⚬ h).( ν(f ⚬ t ⚬ h) )
 		=	{ (4) }
 		   (g ⚬ h).( ν(f ⚬ h ⚬ g) )
+		=	{ (5), aiming to make g appear 
+				to the right of h with (4) in
+				order to enable "rolling" }
+		   (g ⚬ t ⚬ h).( ν(f ⚬ h ⚬ g) )
+		=	{ (4)  }
+		   (g ⚬ h ⚬ g).( ν(f ⚬ h ⚬ g) )
 		=	{ rolling }
-		   ν( h ⚬ g ⚬ f )
+		   g.( ν(h ⚬ g ⚬ f) )
 
-This gives us the surprising result that
+This gives us the expected  result that
+
+	(νx :: (X;(x ∨ •q) ∨ •q) ∧ •p)  =  •p ∧ (νx :: (X;x ∧ •p) ∨ •q)
+
+		*						*
+					*
+
+In a previous attempt, we didn't realize that we needed to apply (5) then (4) before apply rolling last.  This gave us the surprising result that
 
 	(νx :: (X;(x ∨ •q) ∨ •q) ∧ •p)  =  (νx :: (X;x ∧ •p) ∨ •q)
 
-It is surprising because the left hand side implies •p but the right hand side does not seem to.  As a matter of fact, •q implies the right hand side and most definitely does not imply •p in general.
+It is surprising because the left hand side implies •p but the right hand side does not seem to.  As a matter of fact, •q implies the right hand side and most definitely does not imply •p in general, which it would by transitivity if the above equality held.
 
 Proof of [ •q ⇒ (νx :: (X;x ∧ •p) ∨ •q) ]
 
@@ -192,4 +205,4 @@ Proof of [ •q ⇒ (νx :: (X;x ∧ •p) ∨ •q) ]
 		=	{ weakening }
 		   true
 
-It would seem that there is something wrong with one of the proofs above. How annoying ...
+This set me to find an error in my last proof. How annoying ...
