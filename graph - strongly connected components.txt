@@ -1,0 +1,107 @@
+Strongly connected components
+
+	[ c  ≡  *g ∧ ~*g ]
+
+init
+	〈∀u:: f.u = {u}〉
+
+inv
+	J0:	[ f ⇒ *g ]
+
+FP
+	[ f ⇐ *g ]
+	c.u = f.
+
+	A.u.v
+		during
+			u(g)v				G0
+			¬[ f.v ⇒ f.u ]			G1
+		do
+			f.u := f.u ∪ f.v		A0
+		end
+
+proof of fixpoint
+	…
+
+We prove that if FP is reached, no A.u.v is scheduled for execution.
+
+		 〈∃u,v: u(g)v: ¬[ f.u ⇐ f.v ]〉
+		⇒	{ J0 }
+		 〈∃u,v: u(g)v: ¬[ f.u ⇐ (*g).v ]〉
+		=	{ ¬ over [ ∙ ] }
+		 〈∃u,v:  u(g)v:〈∃w:: ¬f.u.w  ∧  v(*g)w〉〉
+		=	{ nesting }
+		 〈∃u,w::  ¬f.u.w  ∧〈∃v::  u(g)v  ∧  v(*g)w〉〉
+		=	{ definition of ; }
+		 〈∃u,w::  ¬f.u.w  ∧  u(g ; *g)w〉
+		⇒	{ [ g ; *g  ⇒  *g ] }
+		 〈∃u,w::  ¬f.u.w  ∧  u(*g)w〉
+		=	{ predicate calculus }
+		   ¬[ f  ⇐  *g ]
+
+
+invariance of J0
+
+		  f'.u.x ⇒ u(*g)x
+		=	{ A0 }
+		  f.u.x ∨ f.v.x  ⇒  u(*g)x
+		=	{ J0 }
+		  f.v.x  ⇒  u(*g)x
+
+		  f.v.x
+		⇒	{ J0 }
+		  v(*g)x
+		=	{ G0 }
+		  u(g)v ∧ v(*g)x
+		⇒	{ introduce ; }
+		  u(g;*g)x
+		⇒	{ transitivity }
+		  u(*g)x
+		
+	P0:	true  ↦  FP
+by induction over *g \ f  ( with J0 providing the bottom of the order )
+	P1:	tr  [ f ≡ k ]
+	S0:	st  [ k ⇒ f ]
+
+P1 - part 1 - schedule
+
+		  〈∃u,v:: ¬f.u.v ∧ u(*g)v〉 ⇒ 〈∃x,y: x(g)y: 〈∃z:: f.y.z ∧ ¬f.x.z〉〉
+		=	{ ⇒ over ∃ }
+		  〈∀u,v:: ¬f.u.v ∧ u(*g)v   ⇒ 〈∃x,y: x(g)y: 〈∃z:: f.y.z ∧ ¬f.x.z〉〉〉
+
+		    ¬f.u.v ∧ u(*g)v
+		=	{ J1: 〈∀u:: f.u.u〉}
+		    ¬f.u.v ∧ u(*g)v ∧ f.v.v
+		=	{ crossing edge theorem with p.x  ≡  ¬f.x.v }
+		  〈∃x,y: x(g)y:   f.y.v ∧ ¬f.x.v〉
+		⇒	{ instantiation }
+		  〈∃x,y: x(g)y: 〈∃z:: f.y.z ∧ ¬f.x.z〉〉
+
+P1 - part 2 - change
+
+		 〈∃x,y::  f'.x.y ≢ k.x.y〉
+		⇐	{ instantiation }
+		 〈∃y::  f'.u.y ≢ k.u.y〉
+		=	{ A0 }
+		 〈∃y::  f.u.y ∨ f.v.y  ≢  k.u.y〉 
+		=	{ [ f ≡ k ] }
+		 〈∃y::  f.u.y ∨ f.v.y  ≢  f.u.y〉 
+		=	{ predicate calculus }
+		   ¬[ f.v  ⇒  f.u ]
+
+S0 - f is non-decreasing
+
+		   [ k.x ⇒ f'.x ]
+
+case x = u
+
+		   [ k.u  ⇒  f'.u ]
+		=	{ A0.u }
+		   [ k.u  ⇒  f.u ∨ f.v ]
+		⇐	{ strengthening }
+		   [ k.u  ⇒  f.u ]
+
+for x ≠ u
+
+		   A0.u does not affect f.x
+

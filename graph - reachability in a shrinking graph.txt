@@ -1,0 +1,143 @@
+Glossary
+	root (u)
+	reachable (r)
+	
+
+FP:
+	r.x ∧ x(*g)y  ⇒  r.y		(∀x,y)
+
+invariant
+	J0:		[ r ⇒ z ]
+	J1:		r.u
+	J2:		〈∀x,y::  r.x ∧ x(*g)y  ⇒  z.y〉
+
+	S0:		stable [ k ⇒ r ]				for all k
+	S1:		stable [ (*g).u  ⇒  k ]			for all k
+
+(0)		x(R)y  ≡  x=y ∧ r.x
+
+		   x(R ; *g)y   ⇒   x(true ; R)y
+		=	{ composition }
+		 〈∃z::  x(R)z ∧ z(*g)y〉⇒〈∃z::  x(true)z ∧ z(R)y〉
+		=	{ (0) and true }
+		 〈∃z::  r.x ∧ x = z ∧ z(*g)y〉⇒〈∃z::  r.z ∧ z = y〉
+		=	{ one point rule }
+		   r.x ∧ x(*g)y  ⇒  r.y
+
+			A.x ^= 
+				during
+					〈∃y:: r.y ∧ y(g)x〉		(C0) (G0)
+					¬r.x						(C1)
+				do
+					r.x := true				(S0)
+				end
+
+Theorem 0
+
+	FP is a fixpoint
+		〈∧x,y: r.x ∧ x(*g)y:  r.y〉
+		≡
+		〈∧x,y: r.x ∧ x(g)y:  r.y〉
+
+Proof, we proceed by mutual implication
+
+Ping (⇐):	follows from [ g ⇒ *g ]
+Pong (⇒):	
+
+			 〈∧x,y: r.x ∧ x(*g)y:  r.y〉
+			=	{ trading }
+			 〈∧x,y: r.x ∧ x(*g)y ∧ ¬r.y:  false〉
+			⇐	{ crossing edge theorem }
+			 〈∧x,y:〈∨u,v::  r.u ∧ u(g)v ∧ ¬r.v〉:  false〉
+			=	{ trading }
+			 〈∧x,y::〈∨u,v::  r.u ∧ u(g)v ∧ ¬r.v〉⇒  false〉
+			=	{ ⇒ over ∨; trading }
+			 〈∧x,y::〈∧u,v:  r.u ∧ u(g)v:  r.v〉〉
+			⇐	{ unused variables }
+			 〈∧u,v:  r.u ∧ u(g)v:  r.v〉
+
+		P0:		true  ↦  [ (*g).u  ⇒  r ]
+	⇐		{ induction over `(*g).u ∧ ¬r' }
+		S2:		[ (*g).u ∧ ¬r  ⇒  k ]  un  [ (*g).u  ⇒  r ]
+		P1:		tr  [ k  ≡  (*g).u ∧ ¬r  ] ∧ ¬[ (*g).u  ⇒  r ]
+
+P1 - find an action
+
+		 〈∃v: u(*g)v:  ¬r.v〉
+		=	{ J1 }
+		 〈∃v: r.u ∧ u(*g)v:  ¬r.v〉
+		=	{ crossing edge theorem }
+		 〈∃x,y: r.x ∧ x(g)y:  ¬r.y〉
+		=	{ nesting }
+		 〈∃y::〈∃x:: r.x ∧ x(g)y〉∧  ¬r.y〉
+
+P1 - change
+
+		 〈∃x::  k.x  ≢  u(*g)x ∧ ¬r'.x〉
+		=	{ S0.x }
+		 〈∃x::  k.x  ≢  false〉
+		=	{ predicate calculus }
+		 〈∃x::  k.x〉
+		=	{ [ k  ≡  (*g).u ∧ ¬r  ] }
+		 〈∃x::  u(*g)x ∧ ¬r.x〉
+		=	{ predicate calculus }
+		   ¬[ (*g).u ⇒  r ]
+
+Invariance
+
+J0
+		   r'.v ⇒ z.v
+		=	{ S0.v }
+		   z.v
+		⇐	{ J2 }
+		 〈∨x::  r.x ∧ x(*g)v〉
+		⇐	{ [ g ⇒ *g ] }
+		 〈∨x::  r.x ∧ x(g)v〉
+		=	{ G0.v }
+		   true
+
+J1	trivial
+J2	
+
+	case x = v
+		   r'.v ∧ v(*g)y  ⇒  z.y
+		=	{ A0.v }
+		   v(*g)y  ⇒  z.y
+		=	{ G0.v }
+		 〈∃w::  r.w ∧ w(g)v ∧ v(*g)y〉⇒  z.y
+		⇐	{ *g is transitive }
+		 〈∃w::  r.w ∧ w(*g)y〉⇒  z.y
+		=	{ ⇒ over ∃ }
+		 〈∀w::  r.w ∧ w(*g)y  ⇒  z.y〉
+
+	case x ≠ v, A0.v does not affect J2
+
+We must also show that our hypotheses are sufficient to maintain the invariance
+
+Z0		[ (*g).u  ⇒  k ] co [ (*g).u  ⇒  k ]
+		¬(x(g)y)  un  u(*g)x ∧ u(*g)y
+Z1			¬(x(g)y) ∧ ¬( u(*g)x ∧ u(*g)y )  co  ¬(x(g)y) ∨ ( u(*g)x ∧ u(*g)y )
+		⇒		{ Z1 }
+			[ (*g).u ⇒ k ] ∧ ¬(x(g)y) ∧ ¬( u(*g)x ∧ u(*g)y )  co  ( ¬(x(g)y) ∨ ( u(*g)x ∧ u(*g)y ) ) ∧ [ (*g).u ⇒ k ]
+		⇒		{ monotonicity }
+			[ (*g).u ⇒ k ] ∧ ¬(x(g)y) ∧ ¬( k.x ∧ k.y )  co  ( ¬(x(g)y) ∨ ( k.x ∧ k.y ) ) ∧ [ (*g).u ⇒ k ]
+		⇒		{ weakening }
+			[ (*g).u ⇒ k ] ∧ ¬(x(g)y) ∧ ¬( k.x ∧ k.y )  co  ¬(x(g)y) ∨ ( k.x ∧ k.y )
+
+		   r.v ∧ v(*g')y ∧ ¬z.y
+		⇒	{ J0 }
+		   z.v ∧ v(*g')y ∧ ¬z.y
+		⇒	{ crossing edge theorem }
+		 〈∃w,x:: z.w ∧ w(g')x ∧ ¬z.x〉
+		=	{ predicate calculus }
+		 〈∃w,x:: z.w ∧ w( g' ∧ (g ∨ ¬g) )x ∧ ¬z.x〉
+split
+		 〈∃w,x:: z.w ∧ w( g' ∧ g )x ∧ ¬z.x〉
+		⇒	{ weakening }
+		 〈∃w,x:: z.w ∧ w(g)x ∧ ¬z.x〉
+
+
+		 〈∃w,x:: z.w ∧ w( g' ∧ ¬g )x ∧ ¬z.x〉
+
+Safety
+

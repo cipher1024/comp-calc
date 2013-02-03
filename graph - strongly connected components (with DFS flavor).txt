@@ -1,0 +1,18 @@
+
+
+	x≼y  ≡  x(*g)y
+
+	x≼y ∧ y≼z  ⇒  x≼z
+	x≼x
+
+	(∀x,y::  x ≼ y   ≡   (∀z::  y ≼ z  ⇒  x ≼ z))
+
+J0:		x(c)y  ≡  y(c)x
+J1:		x(c)y ∧ y(c)z  ⇒  x(c)z
+			[ c ⇒ *g ∧ ~*g ]
+J3:		x(c)y  ⇒  x(*g)y ∧ x(*g)y
+J2:		[ d ⇒ *g ]
+
+FP:
+	[ c  ≡  *g ∧ ~*g ]
+	[ c  ⇐  *g ∧ ~*g ]

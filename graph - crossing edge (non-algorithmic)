@@ -1,0 +1,74 @@
+
+		=	{ }
+		 
+		=	{ }
+		 
+		=	{ }
+		 
+
+〈∃u:: r.u  ≢  v(*d)u〉  ==> 〈∃i,j: r.i ∧ ¬r.j: i(d)j〉
+
+u()v  ≡  u = v ∧ r.u
+
+R = r⚬J
+⚬
+	(0)	[ *d ≡〈∃k: 0≤k: d^k〉]
+
+Crossing edge (non-algorithmic)
+
+assume 
+	(2) r.i, r.j, ¬r.m, ¬r.n
+
+i(*d)m ==> 〈∃j,n:: i(d)n〉
+
+		 i(*d)m ==> 〈∨j,n:: i(d)n〉
+		=	{ (0) }
+		〈∨k:: i(d^k)m〉==>〈∨j,n:: j(d)n〉
+		=	{ ==> over ∨ }
+		〈∧k:: i(d^k)m ==>〈∨j,n:: j(d)n〉〉
+		=	{ (3) }
+		〈∧k:: p.i.m.k〉
+	
+	(3)	p.i.m.k  ≡  i(d^k)m ==>〈∨j,n:: j(d)n〉
+	
+	induction:
+		〈∧j,n,x: 1≤x<k: p.j.n.x〉==> p.i.m.k
+
+		 i(*d)m
+		=	{ (0) }
+		〈∃k: 1≤k: i(d^k)m〉
+		=	{ split off k=1 }
+		〈∃p,q: 1≤p,q<k: i(d^p;d^q)m〉∨ i(d)m
+
+		 i(*d)m
+		=	{ (0) }
+		〈∃k: 1≤k: i(d^k)m〉
+		=	{ split off k=1 }
+		〈∃k: 1≤k: i( d;d^1 )m〉∨ i(d)m
+
+		〈∃k: 1≤k: i( d;d^(k-1) )m〉
+		
+		〈∃p,q: 1≤p,q<k: i(d^p;d^q)m〉
+		=	{ ; }
+		〈∃p,q,v: 1≤p,q<k: i(d^p)v ∧ v(d^q)m〉
+		==>	{ case analysis with r.v }
+		〈∃q,v: 1≤q<k ∧ r.v: v(d^q)m〉∨〈∃p,v: 1≤p<k ∧ ¬r.v: i(d^p)v〉
+		=
+		
+		 i(d)m
+		==>	{ instantiation }
+		〈∨j,n:: j(d)n〉
+				
+	(1)	i(d^0)m ≡ false
+
+		 i(d^0)m
+		=	{ r^0 = J }
+		 i = m
+		==>	{ Leibniz }
+		 r.i ≡ r.m
+		==>	{ implication }
+		 r.i ==> r.m
+		=	{ implication }
+		 ¬(r.i ∧ ¬r.m)
+		=	{ (2) }
+		 false

@@ -1,0 +1,88 @@
+Theorem
+
+Provided
+	(0)		u(*g)v 
+	(1)		p.u ∧ ¬p.v
+
+There exists x, y such that
+
+	(2)		p.x ∧ ¬p.y
+	(3)		u(*g)x
+	(4)		y(*g)v
+	(5)		x(g)y
+
+We know
+	(6)		u(g;*g)v
+	
+	because u ≠ v
+	
+We construct an algorithm to find x and y.  We use ¬p.y as our exit condition and the rest as invariants. We take the distance between y and v as our variant and name it k.
+
+	J0:		p.x
+	J1:		u(*g)x
+	J2:		y(g^k)v
+	J3:		x(g)y
+
+	C0:		¬p.y
+
+Lemma 0;
+	The loop is exited at the latest when k = 0.
+	
+		  k = 0
+		=>	{ J2 }
+		  y(g^0)v
+		=	{ power 0 }
+		  y = v
+		=>	{ (1) }
+		  ¬p.y
+
+(end of Lemma 0)
+
+To ensure termination, we choose our first step as a decrease of k.
+
+	S0:		k' = k-1
+
+invariance of J2
+
+		  y(g^k)v
+		=	{ S0 }
+		  y( g^(k'+1) )v
+		=	{ ^ over + }
+		  y( g;g^k')v
+		=	{ expand ; }
+		 〈∃w:: y(g)w ∧ w(g^k')v〉
+		=	{ S1: y' = w and S2: x' = y }
+		  x'(g)y' ∧ y'(g^k')v
+		  
+	S1: 	〈∃w: y(g)w ∧ w(g^k')v: y' = w〉
+	S2:		x' = y
+
+J2 and J3 preserved
+
+invariance of J1
+
+		  u(*g)x'
+		=	{ S1 }
+		  u(*g)y
+		<=	{ find a place for x }
+		  u(*g;g)y
+		=	{ expand ; }
+		 〈∃w:: u(*g)w ∧ w(g)y〉
+		<=	{ instantiation }
+		  u(*g)x ∧ x(g)y
+		=	{ J3 }
+		  u(*g)x
+		  
+J1 preserved
+
+invariance of J0
+
+		  p.x'
+		=	{ S1 }
+		  p.y
+		=	{ ¬C0 }
+		  true
+
+J0 preserved
+
+initially, x = u, and choose y, k such that x(g)y and y(g^k)v. Such a choice is possible because of x(g;*g)v. The semicolon gives us the a `y' such that y(*g)v and [ *g ≡〈∃k:: g^k〉] makes it possible to choose a `k'. 

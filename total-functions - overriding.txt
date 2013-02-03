@@ -1,0 +1,130 @@
+total functions
+------------
+
+f ∈ s → t
+
+total:
+	〈∀x: x ∈ s:〈∃y: y ∈ t: x(f)y〉〉
+
+(0)	[ s;true  ⇒  f;t;true ]
+
+functional:
+	〈∀x,y,z: x ∈ s ∧ x(f)y ∧ x(f)z: z = y〉
+
+	   [ s ; f ; ¬J ⇒ ¬f ]
+	=	{ right exchange }
+	   [ ~(s ; f) ; f ⇒ J ]
+	=	{ ~ over ; }
+	   [ ~f ; ~s ; f ⇒ J ]
+	=	{ ~ over middle conditions }
+	   [ ~f ; s ; f ⇒ J ]
+
+(1)	[ ~f ; s ; f  ⇒  J ]
+
+
+limited:
+	〈∀x,y: x(f)y: x ∈ s ∧ y ∈ t〉
+
+(2)	[ f  ⇒  s;true;t ]
+
+	[ t ⇒ u ]			(3)
+⇒
+	f ∈ s → u
+
+totality
+
+	 〈∃y: y ∈ t: x(f)y〉
+	⇒	{ [ t ⇒ u ] }
+	 〈∃y: y ∈ u: x(f)y〉
+
+	   f;u
+	⇐	{ (3) }
+	   f;t
+	⇐	{ (0) }
+	   s;true
+
+
+Overriding
+---------
+
+	f ∈ s → u
+	g ∈ t → u
+
+(4)	[ f <+ g  ≡  (f ∧ ¬t;true) ∨ g ]
+
+	f <+ g ∈ s∨t → u
+
+(fg0)	[ (s∨t);true  ⇒  (f<+g);u;true ]
+
+		   (f <+ g);u;true
+		=	{ (4) }
+		   (f ∧ ¬t;true);u;true ∨ g;u;true
+		=	{ x;true is a left-condition }
+		   (f;u ∧ ¬t;true);true ∨ g;u;true
+		=	{ _;true is a left-condition }
+		   (f;u;true ∧ ¬t;true) ∨ g;u;true
+		⇐	{ (f0) and (g0) }
+		   (s;true ∧ ¬t;true) ∨ t;true
+		=	{ ∨ over ∧ }
+		   (s;true ∨ t;true) ∧ (¬t;true ∨ t;true)
+		=	{ ; over ∨ and [ true ≡ true;true ] }
+		   (s ∨ t);true
+
+(fg1)	[ ~(f <+ g) ; s ; (f <+ g)  ⇒  J ]
+	WRONG!
+
+		   ~(f <+ g) ; (s∨t) ; (f <+ g)
+		=	{ ; over ∨ }
+		   ~(f <+ g) ; s ; (f <+ g)  ∨  ~(f <+ g) ; t ; (f <+ g)
+		⇒	{ (4) }
+		      ~(f ∧ ¬t;true) ; (s∨t) ; (f ∧ ¬t;true)  ∨  ~g ; (s∨t) ; g
+		   ∨ ~g ; (s∨t) ; (f ∧ ¬t;true)  ∨  ~(f ∧ ¬t;true) ; (s∨t) ; g
+		⇒	{ weakening; (g1) }
+		   ~f ; s ; f  ∨  J
+		=	{ (f1) }
+		   J
+
+		   ~g ; (s∨t) ; (f ∧ ¬t;true)
+		=	{ ¬t;true is a left condition }
+		   ~g ; ((s∨t)∧true;¬t) ; f
+		⇒	{ [ s∨t ⇒ J ] }
+		   ~g ; (J ∧ true;¬t) ; f
+		=	{ creation of middle condition }
+		   ~g ; ¬t ; f
+		⇒	{ g ⇒ t;true;u }
+		   u ; true ; t ; ¬t ; f
+		=	{ middle condition }
+		   true ; (t ∧ ¬t) ; f
+		=	{ zero of ; }
+		   false
+
+
+
+x ; y  ≡  x ∧ y
+
+		   x ; y
+		=	{ x is a left condition }
+		   (x ∧ J) ; y
+		=	{ (46) }
+		   x ∧ J;y
+		=	{ identity }
+		   x ∧ y
+
+
+
+~(f ∧ ¬t;true) ; (s∨t) ; g
+
+
+(fg2)	[ (f <+ g)  ⇒  (s∨t) ; true ; u ]
+
+		   f <+ g
+		=	{ (4) }
+		   (f ∧ ¬t;true) ∨ g
+		⇒	{ weakening }
+		   f ∨ g
+		⇒	{ (f2) and (g2) }
+		   s;true;u ∨ t;true;u
+		=	{ ; over ∨ }
+		   (s∨t);true;u
+
+

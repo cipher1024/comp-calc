@@ -1,0 +1,133 @@
+Problem:
+	if I take f ∈ s → t to mean that f accepts at least arguments of type s and maps the arguments of type s to objects of type t
+
+
+
+f ∈ s → t  ≡  [ s;true ⇒ f ] ∧ [ s;f ⇒ J ]
+
+theorem 0
+---------
+
+f ∈ s → t  ⇒  f ∈ u → t
+	provided
+		u ⊆ s
+		[ u ⇒ s ]		(0)
+
+(0)	[ f ⇒ s;true;t ]
+	[ f;true ≡ s;true ]
+(1)	[ s;true ⇒ f;t;true ]
+(2)	[ s;true  ∧  f;¬J  ⇒  ¬f ]
+
+prove
+(3)	[ u;true  ⇒  f;t;true ]		total
+(4)	[ u;true ∧ f;¬J  ⇒  ¬f ]		functional
+
+proof of (3)
+	   u;true
+	⇒	{ (0) }
+	   s;true
+	⇒	{ (1) }
+	   f;t;true
+
+proof of (4)
+	   u;true
+	⇒	{ (0) }
+	   s;true
+	⇒	{ (2) }
+	   (f ; ¬J  ⇒  ¬f)
+
+theorem 1
+--------
+
+f ∈ s → t  ⇒  f ∈ s → u
+	provided
+		t ⊆ u
+		[ t ⇒ u ]		(5)
+
+t and u only appear on the left of the implication in the definition of total.  Monotonicity with (0) is simple to apply
+
+definition 2
+---------
+
+	(6)	f <+ g  =  (f ∧ ¬g;true) ∨ g
+
+theorem 3
+--------
+
+	f ∈ s → t
+	g ∈ u → v
+⇒
+	f <+ g ∈ (s∨u) → (t∨v)
+
+assuming
+	(7)	[ s;true  ⇒  f;t;true ]		total
+	(8)	[ s;true ∧ f;¬J  ⇒  ¬f ]		functional
+
+	(9)	[ u;true  ⇒  g;v;true ]		total
+	(10)	[ u;true ∧ g;¬J  ⇒  ¬g ]	functional
+
+
+proof of functionality
+	(11)		[  (s∨u) ; true ∧ (f<+g) ; ¬J  ⇒  ¬(f<+g) ]
+
+		   (f<+g) ; ¬J  ⇒  ¬(f<+g)
+		=	{ (6) }
+		   (f ∧ ¬g;true);¬J ∨ g;¬J  ⇒  ¬(f<+g)
+		=	{ predicate calculus }
+		   ( (f ∧ ¬g;true);¬J  ⇒  ¬(f<+g) )  ∧  ( g;¬J  ⇒  ¬(f<+g) )
+
+		   (s∨u).x ∧ x(f<+g)y ∧ z ≠ y
+		=	{ (6) }
+		   (s∨u).x ∧ x¬(g;true)y ∧ x(f)y ∨ x(g)y ∧ z ≠ y
+
+
+proof of totality
+	(12)		[ (s∨u);true  ⇒  (f <+ g) ; (t∨v) ; true ]
+
+		   (f<+g) ; (t ∨ v) ; true
+		=	{ ; over ∨ }
+		   "(f<+g)";t;true ∨ "(f<+g)";v;true
+		⇐	{ (6) twice; strenghtening }
+		   (f ∧ ¬g;true) ; t ; true  ∨  g ; v ; true
+		=	{ ¬g;true is a left condition }
+		   ( f;t;true ∧ ¬g;true ) ∨ g ; v ; true
+		⇐	{ predicate calculus;  identity }
+		   ( f;t;true ∧ (¬g;J;true ∨ g;v;true) ) ∨ g;v;true
+		⇐	{ monotonicity }
+		   ( f;t;true ∧ (¬g;true;true ∨ g;v;true) ) ∨ g;v;true
+
+	[ true ; x ; true  ≡  true ]
+
+	 〈 true ; x ; true ∧ z 〉
+	=	{ 
+
+	   [ z  ⇒  ¬(g;true) ]
+	=	{ contrapositive }
+	   [ ¬(g;true)  ⇒   ]
+
+
+		    [ (f ∧ ¬(g;true)) ; "t ; true"  ⇒  z ]
+		=	{ right exchange }
+		    [ (¬f ∨ (g;true)) ; ~z  ⇒  ~(t ; true) ]
+		=	{ left exchange }
+		    [ t ; true ; ¬~z  ⇒  ~(¬f ∨ (g;true)) ]
+		=	{ right exchange }
+		    [ ¬(t ; true) ; (¬f ∨ (g;true))  ⇒  ¬z ]
+
+second ugly theorem on (f ∧ ¬(g;true)) ; t ; true
+	x: 	¬(g;true)
+	y: 	f
+	z: 	t;true
+
+〈∀x: x ∈ S:〈∃y: y ∈ T: x(f)y〉∧〈∀
+
+[ f ; true ]
+〈∀x,y:: 〈∃z:: x(f)z〉〉
+
+[ s;true  ⇒  f;t;true ]
+
+[ f ; ¬J  ⇒  ¬f ]
+
+〈∀x,y,z:: s.x ∧ x(f)y ∧ y ≠ z  ⇒  ¬x(f)z〉
+
+[ s;true ∧ f;¬J  ⇒  ¬f ]
