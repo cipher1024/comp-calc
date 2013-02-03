@@ -321,3 +321,74 @@ We use the same technique as in the second part of the proof of (C15), that is f
 		   (X;( s ∧ x ) ∧ •p) ∨ false ∨ •q
 		=	{ definitions }
 		   h.(f.x)
+
+Proof of relations between UNITY and LTL
+
+(6a)		[ s W (•p ∧ Gt)  ⇐  sW•p ∧ Gt ]
+(6b)		[ (•p ∧ Gs) W t  ≡  •pWt ∧ Gs ]
+
+	(a)	(u ∧ Gs)W(t ∧ Gs)  =  uWt ∧ Gs
+
+		(νx:: (X;x ∧ u) ∨ t)
+		(νx:: (X;x ∧ u ∧ Gs) ∨ (t ∧ Gs))
+	
+	f.x = X;x
+		(b)	p ⚬ f = p ⚬ f ⚬ p
+			-- persistence
+
+	g.x = x ∧ u
+	p.x = x ∧ Gs
+		-- commute
+
+	h.x = x ∨ t
+	k.x = x ∨ (t ∧ Gs)
+		-- h absorbs k
+		(c)	p ⚬ h  =  k ⚬ p
+
+		p.( ν(h ⚬ g ⚬ f) )
+		ν(k ⚬ p ⚬ g ⚬ f)
+
+		   p.( ν(h ⚬ g ⚬ f) )
+		=	{ persistence with ν (d) }
+		   p.( ν(p ⚬ h ⚬ g ⚬ f) )
+		=	{ rolling }
+		   (p ⚬ p).( ν(h ⚬ g ⚬ f ⚬ p) )
+		=	{ p is idempotent }
+		   p.( ν(h ⚬ g ⚬ f ⚬ p) )
+		=	{ rolling }
+		   ν(p ⚬ h ⚬ g ⚬ f)
+		=	{ (c) }
+		   ν(k ⚬ p ⚬ g ⚬ f)
+
+	(d)	persistence with ν
+			[ Gs ∧ (νx :: p.x)  ⇒  (νx :: Gs ∧ p.x) ]
+
+		t = Gs ∧ (νx :: p.x)
+		p is conjunctive 
+		persistence on p
+
+		   [ t  ⇒  (νx :: Gs ∧ p.x) ]
+		⇐	{ induction }
+		   [ t  ⇒  Gs ∧ p.t ]
+		=	{ p is conjunctive }
+		   [ t  ⇒  Gs ∧ p.(Gs) ∧ p.(νx :: p.x) ]
+		=	{ persistence on p; folding ν }
+		   [ t  ⇒  Gs ∧ p.true ∧ (νx :: p.x) ]
+		=	{ 
+
+	to be continued
+
+		*						*
+					*
+
+		   (νx :: p.x)
+		   ¬Gs ∨ (νx :: Gs ∧ p.x)
+		=	{ G is idempotent }
+		   GGs ∧ (νx :: p.x)
+		=	{ fixpoint formulation }
+		   (νx :: (X;x ∨ 1) ∧ Gs) ∧ (νx :: p.x)
+
+
+(7)	•p W •q  =  (∃s:: •(s ∨ q) ∧ G•(s ⇒ p) ∧ (s unless q))
+	p unless q  =  G (•p ⇒ •p W •q)
+
