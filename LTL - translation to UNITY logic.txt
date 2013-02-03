@@ -92,12 +92,12 @@ We are left to prove
 
 Looking at the second part of the proof of (C15), we see that we will need something like (C18) to unfold sUt. Our initial guess is that the following will do. Let's try it.
 
-	(2)	sUt  =  (s ∧ X ; (sUt)) ∨ t
+	(a)	sUt  =  (s ∧ X ; (sUt)) ∨ t
 
 		   f.(g.x)
 		=	{ definitions }
 		   sUt  ∨  ( (X;x ∨ 1) ∧ s )
-		=	{ (2) }
+		=	{ (a) }
 		   t ∨ ( X;(sUt) ∧ s ) ∨ ( (X;x ∨ 1) ∧ s )
 		=	{ ∧ over ∨ }
 		   t ∨ (( X;(sUt) ∨ X;x ∨ 1 ) ∧ s)
@@ -112,9 +112,23 @@ Looking at the second part of the proof of (C15), we see that we will need somet
 
 	h.x  =  (X;x ∧ s) ∨ (1 ∧ s) ∨ t
 
-(2)	p un q  =  G (•p  ⇒  •p W •q)
+	proof of (a)
 
-	we can prove the above by proving •p  ∧  •p W •q  =  (G •p) ; (X ∨ 1) ; •q
+		   sUt
+		=	{ definition of U }
+		   (μx :: (X;x ∧ s) ∨ t)
+		=	{ unfolding }
+		   ( s ∧ X;(μx :: (X;x ∧ s) ∨ t) ) ∨ t
+		=	{ definition of U }
+		   ( s ∧ X;(sUt) ) ∨ t
+
+(2)	p un q  =  G (•p  ⇒  •p W •q)
+		-- this is not the exact formula we proved
+	Let's give a different name to our version of W: 
+
+		sKt = (νx :: (X;x ∧ s) ∨ t)
+
+	we can prove the above by proving •p  ∧  •p K •q  =  (G •p) ; (X ∨ 1) ; •q
 
 A first candidate for this proof is to use fixpoint fusion again. However, both fixpoints are present as subexpressions of their side of the equality.  Let's fix this by using (C4) on the right hand side of the equality to rewrite it  as:
 
@@ -123,6 +137,9 @@ A first candidate for this proof is to use fixpoint fusion again. However, both 
 The fixpoint expression on the left hand side is:
 
 	(νx :: (X;x ∧ •p) ∨ •q)
+
+Note: this is not exactly the formulation of p W q. This one prevents a computation to terminate before q holds.
+(end of Note)
 
 Then, we can consider the functions inside the fixpoints 
 
@@ -138,21 +155,21 @@ and
 
 In order to calculate properly with them, here are a series of properties on how they interact pairwise.
 
-	(0)	g ⚬ h  =  k ⚬ g
+	(a)	g ⚬ h  =  k ⚬ g
 		with 
 			k.x = x ∨ (•q ∧ •p)
-	(1)	h ⚬ h  =  h
-	(2)	g ⚬ g  =  g
-	(3)	h ⚬ k  =  h
+	(b)	h ⚬ h  =  h
+	(c)	g ⚬ g  =  g
+	(d)	h ⚬ k  =  h
 
 Let's try to make P0 appear by calculating with P1.
 
 	   ν( h ⚬ g ⚬ f )		
-	=	{ (3) }
+	=	{ (d) }
 	   ν( h ⚬ k ⚬ g ⚬ f )
 	=	{ rolling }
 	   h.( ν(k ⚬ g ⚬ f ⚬ h) )
-	=	{ (0) }
+	=	{ (a) }
 	   h.( ν(g ⚬ h ⚬ f ⚬ h) )
 
 Which gives us the equality 
@@ -161,37 +178,39 @@ Which gives us the equality
 
 Pretty interesting. What happens if we start calculating directly with P1 however? For the sake of increasing our freedom when manipulating h and g next to one another, let's see what we get when we rewrite h ⚬ g.
 
-	(4)	h ⚬ g  =  t ⚬ h
+	(e)	h ⚬ g  =  t ⚬ h
 		with
 			t.x = x ∧ (•p ∨ •q)
-	(5)	g ⚬ t = t ⚬ g = g
+	(f)	g ⚬ t = t ⚬ g = g
 
 		   ν(g ⚬ h ⚬ f ⚬ h)
 		=	{ rolling }
 		   (g ⚬ h).( ν(f ⚬ h ⚬ g ⚬ h) )
-		=	{ (4) }
+		=	{ (e) }
 		   (g ⚬ h).( ν(f ⚬ t ⚬ h ⚬ h) )
-		=	{ (1) }
+		=	{ (b) }
 		   (g ⚬ h).( ν(f ⚬ t ⚬ h) )
-		=	{ (4) }
-		   (g ⚬ h).( ν(f ⚬ h ⚬ g) )
-		=	{ (5), aiming to make g appear 
-				to the right of h with (4) in
-				order to enable "rolling" }
-		   (g ⚬ t ⚬ h).( ν(f ⚬ h ⚬ g) )
-		=	{ (4)  }
-		   (g ⚬ h ⚬ g).( ν(f ⚬ h ⚬ g) )
+		=	{ (f), aiming to make g appear 
+				to the right of h with (e)  }
+		   (g ⚬ t ⚬ h).( ν(f ⚬ t ⚬ h) )
 		=	{ rolling }
+		   g.( ν(t ⚬ h ⚬ f) )
+		=	{ (e) }
 		   g.( ν(h ⚬ g ⚬ f) )
 
 This gives us the expected  result that
 
 	(νx :: (X;(x ∨ •q) ∨ •q) ∧ •p)  =  •p ∧ (νx :: (X;x ∧ •p) ∨ •q)
 
-		*						*
-					*
+We now have the two following results:
 
-In a previous attempt, we didn't realize that we needed to apply (5) then (4) before apply rolling last.  This gave us the surprising result that
+(2a)		•p  ∧  •p K •q  =  (G •p) ; (X ∨ 1) ; •q
+(2b)		•p K •q  =  (G •p) ; (X ∨ 1) ; •q ∨ •q
+
+		*								*
+						*
+
+In a previous attempt, we didn't realize that we needed to apply (f) then (e) before apply rolling last.  This gave us the surprising result that
 
 	(νx :: (X;(x ∨ •q) ∨ •q) ∧ •p)  =  (νx :: (X;x ∧ •p) ∨ •q)
 
@@ -206,3 +225,99 @@ Proof of [ •q ⇒ (νx :: (X;x ∧ •p) ∨ •q) ]
 		   true
 
 This set me to find an error in my last proof. How annoying ...
+
+(3a)	sWt  =  sKt ∨ Gs
+(3b)	sKt  =  sWt ∧ (G¬t ⇒ E)
+
+In (3a), there are three ν fixpoints:
+
+		(νx :: (X;x ∧ s) ∨ (1 ∧ s) ∨ t)
+		(νx :: (X;x ∧ s) ∨ t)
+		(νx :: (X;x ∨ 1) ∧ s)
+
+	Which raises the question: which one is f and which one is g?  Strong of the experience with (5), we choose to treat Gs as one of the fixpoints and sKt ∨ x as the outside function f.
+
+		u = sKt
+		f.x  =  u ∨ x
+			(universally conjunctive)
+		g.x  =  (X;x ∨ 1) ∧ s
+		h.x  =  (X;x ∧ s) ∨ (1 ∧ s) ∨ t
+
+Proof of (3a)
+
+		   f.(g.x)
+		=	{ definitions }
+		   ( (X;x ∨ 1) ∧ s ) ∨ u
+		=	{ unfold u }
+		   ( (X;x ∨ 1) ∧ s ) ∨ (X;u ∧ s) ∨ (1 ∧ s) ∨ t
+		=	{ ∧ over ∨ }
+		   ( (X;x ∨ 1 ∨ X;u) ∧ s ) ∨ (1 ∧ s) ∨ t
+		=	{ ; over ∨ and f }
+		   ( (X;(x ∨ u) ∨ 1) ∧ s ) ∨ (1 ∧ s) ∨ t
+		=	{ ∧ over ∨ }
+		   (X;(f.x) ∧ s) ∨ (1 ∧ s) ∨ t
+		=	{ h }
+		   h.(f.x)
+
+Proof of (3b)
+
+	(3a)	sWt  =  sKt ∨ Gs
+		sWt ∧ Gs  ⇒  sKt
+		sKt  ⇒  sWt
+		Gs  ⇒  sWt
+	(3b)	sKt  =  sWt ∧ (G¬t ⇒ E)
+					F  ⇒  F;t
+
+		   sWt ∧ (G¬t ⇒ E)
+		=	{ (3a) }
+		   (sKt ∨ Gs) ∧ (G¬t ⇒ E)
+		=	{ ∧ over ∨ }
+		   (sKt ∧ (G¬t ⇒ E)) ∨ (Gs ∧ (G¬t ⇒ E))
+		=	{ (c) }
+		   sKt ∨ (Gs ∧ (G¬t ⇒ E))
+		=	{ (d) }
+		   sKt
+
+	(c)	[ sKt  ⇒  (G¬t ⇒ E) ]
+
+		   sKt ∧ G¬t
+
+	(d)	[ Gs ∧ (G¬t ⇒ E)  ⇒  sKt ]
+
+(4)	•p W •q   =   (G •p);(X∨1);•q  ∨  G •p  ∨  •q
+
+	We use the same technique as in (3)
+
+		s = G •p ∨ •q
+		f.x  =  x ∨ s
+		g.x  =  (X;x ∧ •p) ∨ •q
+		h.x  =  (X;(x ∨ •q) ∨ •q) ∧ •p
+
+			   h.(f.x)
+			=	{ definitions }
+			   (X;(x ∨ G •p ∨ •q) ∨ •q) ∧ •p
+			=	{ ; over ∨ }
+			   (X;(x ∨ •q) ∨ •q ∨ X;(G •p)) ∧ •p
+			=	{ 
+
+(5)	•p U •q  =  (•p W •q) ∧ F;•q
+
+We use the same technique as in the second part of the proof of (C15), that is fixpoint fusion. (with operator μ)
+
+	s   =   •p W •q
+	f.x  =  s ∧ x
+		(universally disjunctive)
+	g.x  =  X;x ∨ •q
+	h.x  =  (X;x ∧ •p) ∨ •q
+
+		   f.(g.x)
+		=	{ definitions }
+		   s ∧ (X;x ∨ •q)
+		=	{ unfold the fixpoint of s }
+		   ((X;s ∧ •p) ∨ p ∨ •q) ∧ (X;x ∨ •q)
+		=	{ ∨ over ∧ then ∧ over ∨ }
+		   (X;s ∧ •p ∧ X;x) ∨ (p ∧ X;x) ∨ •q
+		=	{ X;_ is conjunctive; p is a state predicate }
+		   (X;( s ∧ x ) ∧ •p) ∨ false ∨ •q
+		=	{ definitions }
+		   h.(f.x)
