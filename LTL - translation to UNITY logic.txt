@@ -361,7 +361,7 @@ Proof of relations between UNITY and LTL
 		   ν(k ⚬ p ⚬ g ⚬ f)
 
 	(d)	persistence with ν
-			[ Gs ∧ (νx :: p.x)  ⇒  (νx :: Gs ∧ p.x) ]
+			[ Gs ∧ (νx :: p.x)  =  (νx :: Gs ∧ p.x) ]
 
 		t = Gs ∧ (νx :: p.x)
 		p is conjunctive 
@@ -378,6 +378,7 @@ Proof of relations between UNITY and LTL
 
 	to be continued
 
+
 		*						*
 					*
 
@@ -392,3 +393,4 @@ Proof of relations between UNITY and LTL
 (7)	•p W •q  =  (∃s:: •(s ∨ q) ∧ G•(s ⇒ p) ∧ (s unless q))
 	p unless q  =  G (•p ⇒ •p W •q)
 
+(8)	(¬•p ∧ u ∧ G (•p ⇒ s))  W  (•p ∧ t ∧ G (•p ⇒ s))  =  (¬•p ∧ u)W(•p ∧ t)  ∧ G (•p ⇒ s)
